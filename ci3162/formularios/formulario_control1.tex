@@ -1,0 +1,266 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[left=1.54cm,right=1.54cm,top=1.5cm,bottom=1.8cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tikz}
+
+\pagestyle{plain}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
+
+\begin{document}
+\shorthandoff{<>}
+\large
+
+% ---------- Encabezado ----------
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+\raggedright
+Mec\'anica de Fluidos CI3162\\
+Primavera 2026
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\raggedleft
+Prof.\ Alberto de la Fuente Stranger\\
+Auxs.\hspace{0.6cm}Josefina Moreno Faune\\
+Sebasti\'an Fredes Ojeda
+\end{minipage}
+
+\vspace{3pt}
+\hrule
+\vspace{-5pt}
+
+\begin{center}
+{\Huge\bfseries Formulario --- Control 1}\\[6pt]
+10 y 11 de Septiembre 2026
+\end{center}
+
+\vspace{14pt}
+
+\noindent\textit{Contiene \'unicamente las herramientas de c\'atedra necesarias para
+resolver las 8 preguntas del Control 1 (10--11 sept. 2026). Donde una f\'ormula es
+producto de una demostraci\'on vista en clases, se incluye su deducci\'on; los
+resultados dados directamente en el enunciado (regresi\'on lineal, integral de ayuda)
+se citan sin volver a deducir.}
+
+\vspace{6pt}
+\hrule
+\vspace{10pt}
+
+%======================================================================
+\noindent{\LARGE\bfseries 1. Hidrost\'atica b\'asica}
+
+Para un fluido en reposo bajo gravedad, el equilibrio de fuerzas sobre un elemento
+diferencial ($\nabla P=\rho\vec g$, con $z$ hacia arriba) entrega
+\[
+\frac{dP}{dz}=-\rho g \quad\Longrightarrow\quad \boxed{P(z)=P_0+\rho g\,h}
+\]
+con $h$ la profundidad medida desde el punto donde la presi\'on vale $P_0$. Usada en
+P2 (columna de agua en el tubo) y como base de P5--P8.
+
+%======================================================================
+\noindent{\LARGE\bfseries 2. Ley de viscosidad de Newton (flujo de Couette plano)}
+
+Entre dos placas planas paralelas separadas por un espesor $e$, una fija y otra movi\'endose
+a velocidad $U$, con flujo estacionario, completamente desarrollado y sin gradiente de
+presi\'on, la ecuaci\'on de Navier--Stokes se reduce a $d^2u/dy^2=0$. Con las condiciones
+de borde $u(0)=0$, $u(e)=U$ (no resbalamiento), el perfil de velocidad es lineal:
+$u(y)=Uy/e$. El esfuerzo de corte es constante en el espesor:
+\[
+\tau=\mu\frac{du}{dy}=\mu\frac{U}{e}
+\quad\Longrightarrow\quad
+\boxed{F=\tau A=\mu\frac{U A}{e}}
+\]
+Usada en P1 (pendiente $m=\mu A/e$ del ajuste $F$ v/s $U$) y en P3 (pel\'icula delgada
+de lubricante entre el disco y cada pared).
+
+%======================================================================
+\noindent{\LARGE\bfseries 3. Ajuste lineal por m\'inimos cuadrados (dado en el enunciado)}
+
+Para un conjunto de datos $(x_i,y_i)$, la pendiente $m$ y el intercepto $n$ de la
+recta $y=mx+n$ que minimiza el error cuadr\'atico son
+\[
+m=\frac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}\ ;\qquad n=\bar y-m\bar x
+\]
+En P1, $x_i=U_i$, $y_i=F_i$, y $\mu=mA/e$ (con $A$, $e$ de la Tabla 1).
+
+%======================================================================
+\noindent{\LARGE\bfseries 4. Equilibrio de un s\'olido r\'igido (pist\'on)}
+
+Segunda ley de Newton para un cuerpo en reposo, $\sum \vec F=0$. Para el pist\'on de
+P2 (peso $Mg$ y presiones de fluido arriba y abajo, \'area $A=\pi D^2/4$):
+\[
+Mg+P_b\,A=P_{atm}\,A
+\quad\Longrightarrow\quad
+P_b=P_{atm}-\frac{Mg}{A}
+\]
+y con la Herramienta 1 (hidrost\'atica), $P_t=P_b-\rho g h$, se obtiene la diferencia
+de presi\'on que debe resistir el tubo.
+
+%======================================================================
+\noindent{\LARGE\bfseries 5. Torque viscoso de un disco rotando junto a una pared
+(pel\'icula delgada)}
+
+Considere un disco de radio $R$ girando con velocidad angular $\omega$ a una distancia
+$e$ de una pared fija, con lubricante de viscosidad $\mu$ en el espacio intermedio. Si
+$e\ll R$, en cada radio $r$ el flujo es localmente un Couette plano con velocidad de
+arrastre $\omega r$ y espesor $e$:
+\[
+\tau(r)=\mu\frac{\omega r}{e}
+\]
+El torque resistente se obtiene integrando el momento de la fuerza de corte sobre toda
+el \'area del disco:
+\[
+T=\int_0^R r\,\tau(r)\,dA
+=\int_0^R r\cdot\frac{\mu\omega r}{e}\cdot 2\pi r\,dr
+=\frac{2\pi\mu\omega}{e}\int_0^R r^3\,dr
+\quad\Longrightarrow\quad
+\boxed{T=\frac{\mu\pi\omega R^4}{2e}}
+\]
+Si el disco tiene lubricante en \emph{ambas} caras (espesores $e_1$, $e_2$), los
+torques resistentes se suman:
+\[
+\boxed{T=\frac{\mu\pi\omega R^4}{2}\left(\frac{1}{e_1}+\frac{1}{e_2}\right)}
+\]
+Usada en P3.
+
+%======================================================================
+\noindent{\LARGE\bfseries 6. Din\'amica rotacional con torque viscoso (decaimiento
+exponencial)}
+
+Segunda ley de Newton para rotaci\'on, $I\dfrac{d\omega}{dt}=-T(\omega)$. Como el
+torque viscoso de la Herramienta 5 es proporcional a $\omega$ ($T=K\omega$, con
+$K=\dfrac{\mu\pi R^4}{2}\left(\dfrac1{e_1}+\dfrac1{e_2}\right)$), la ecuaci\'on queda
+\[
+I\frac{d\omega}{dt}=-K\omega
+\quad\Longrightarrow\quad
+\frac{d\omega}{\omega}=-\frac{K}{I}\,dt
+\]
+Integrando desde $\omega(0)=\omega_0$:
+\[
+\boxed{\omega(t)=\omega_0\,\exp\!\left(-\frac{K}{I}t\right)}
+\]
+El tiempo para alcanzar $\omega=\omega_0/2$ se obtiene despejando:
+\[
+\boxed{t_{1/2}=\frac{I}{K}\ln 2}
+\]
+con $I=MR^2/2$ (dato del momento de inercia de un disco, dado en el enunciado). Usada
+en P4.
+
+%======================================================================
+\noindent{\LARGE\bfseries 7. Equilibrio radial de presi\'on en un fluido rotando como
+s\'olido r\'igido}
+
+Un fluido que rota junto con su recipiente a velocidad angular constante $\omega$
+(sin deslizamiento relativo) experimenta, en el marco no inercial, una aceleraci\'on
+centr\'ipeta $-\omega^2 r\,\hat r$. Despreciando $\vec g$ (seg\'un el enunciado), el
+equilibrio de fuerzas sobre un elemento de fluido en la direcci\'on radial da
+\[
+\boxed{\frac{dP}{dr}=\rho\,\omega^2 r}
+\]
+Usada en P5 y P6.
+
+%======================================================================
+\noindent{\LARGE\bfseries 8. Gas ideal y perfil de presi\'on en rotaci\'on isot\'ermica}
+
+Ecuaci\'on de estado de gas ideal (con constante espec\'ifica $R_o=R_{univ}/m$):
+\[
+\boxed{P=\rho R_o T}
+\]
+Combin\'andola con la Herramienta 7 en un proceso isot\'ermico ($T$ constante),
+$\rho=P/(R_oT)$:
+\[
+\frac{dP}{dr}=\frac{P}{R_oT}\,\omega^2 r
+\quad\Longrightarrow\quad
+\frac{dP}{P}=\frac{\omega^2}{R_oT}\,r\,dr
+\]
+Integrando desde el eje ($r=0$, $P=P_m$) hasta un radio $r$ gen\'erico:
+\[
+\ln\frac{P(r)}{P_m}=\frac{\omega^2 r^2}{2R_oT}
+\quad\Longrightarrow\quad
+\boxed{P(r)=P_m\exp\!\left(\frac{\omega^2 r^2}{2R_oT}\right)}
+\]
+En P5, evaluando en $r=R$ con $P(R)=P_d$ se despeja el radio m\'inimo:
+\[
+\boxed{R=\sqrt{\frac{2R_oT}{\omega^2}\ln\frac{P_d}{P_m}}}
+\]
+
+%======================================================================
+\noindent{\LARGE\bfseries 9. Masa de gas en el recipiente (integraci\'on del perfil de
+densidad)}
+
+Con $\rho(r)=P(r)/(R_oT)=\rho_m\exp\!\left(\dfrac{\omega^2r^2}{2R_oT}\right)$
+($\rho_m=P_m/(R_oT)$), y un elemento de volumen del sector de \'angulo $\theta$ y
+altura $e$ en coordenadas polares $dV=e\,\theta\,r\,dr$, la masa total es
+\[
+M=\int_0^R \rho(r)\,e\,\theta\,r\,dr
+=\rho_m\, e\,\theta\int_0^R \exp\!\left(\frac{\omega^2r^2}{2R_oT}\right) r\,dr
+\]
+Con la integral de ayuda dada en el enunciado
+($\int_0^R e^{Ar^2}r\,dr=\frac{1}{2A}(e^{AR^2}-1)$, $A=\omega^2/(2R_oT)$):
+\[
+\boxed{M=\rho_m\,e\,\theta\,\frac{R_oT}{\omega^2}\left(\exp\!\left(\frac{\omega^2R^2}{2R_oT}\right)-1\right)}
+\]
+Como tambi\'en $M=\rho_0\cdot\dfrac{e\,\theta R^2}{2}$ (masa inicial, sin girar, densidad
+uniforme $\rho_0$ en el mismo volumen), se despeja $\rho_0$ y, con la Herramienta 8,
+$P_0=\rho_0 R_o T$. Usada en P6.
+
+%======================================================================
+\noindent{\LARGE\bfseries 10. Fuerza y torque de presi\'on sobre una superficie plana
+sumergida}
+
+Sea una superficie plana de \'area $A$, con coordenada $y$ medida desde la superficie
+libre a lo largo del plano (profundidad real $=y\sin\theta$), sometida a una presi\'on
+de referencia $P_0$ en $y=0$. La presi\'on en cada punto es $P(y)=P_0+\rho g\,y\sin\theta$.
+
+\textbf{Fuerza resultante} (integrando la presi\'on en el \'area, con
+$y_G=\frac1A\iint y\,dA$ el centroide):
+\[
+F=\iint P\,dA=P_0A+\rho g\sin\theta\, y_G A
+\quad\Longrightarrow\quad
+\boxed{F=\left(P_0+\rho g\,y_G\sin\theta\right)A}
+\]
+
+\textbf{Punto de aplicaci\'on} $y_R$ (tomando momentos respecto de $y=0$, con
+$I_{xG}$ el segundo momento de \'area respecto al eje centroidal y el teorema de ejes
+paralelos $\iint y^2dA=I_{xG}+A y_G^2$): si $P_0=0$ (presi\'on manom\'etrica medida
+desde la superficie libre),
+\[
+\boxed{y_R=y_G+\frac{I_{xG}}{y_G\,A}}
+\]
+Si existe adem\'as una presi\'on uniforme $P_0\neq0$ (p.ej. un gas presurizado), su
+aporte al torque respecto de un punto se suma por separado como una carga uniforme
+$P_0A$ aplicada en el centroide geom\'etrico. Usada (componente horizontal) en P7.
+
+%======================================================================
+\noindent{\LARGE\bfseries 11. Fuerza vertical sobre una superficie curva (empuje /
+volumen de fluido desplazado)}
+
+Para una superficie curva, la componente vertical de la fuerza de presi\'on se obtiene
+proyectando cada elemento de \'area sobre el plano horizontal: $dF_z=P\,dA_h$ ($dA_h=$
+elemento de \'area proyectada). Integrando,
+\[
+F_z=\iint P\,dA_h=\iint (P_0+\rho g\,h)\,dA_h=P_0A_h+\rho g\,V
+\]
+donde $V$ es el volumen (real o virtual) de fluido comprendido entre la superficie
+curva y la superficie libre, y act\'ua en el centroide de dicho volumen. En otras
+palabras: \emph{la fuerza vertical sobre una superficie curva equivale al peso del
+fluido que ocupa (o que ocupar\'ia) el volumen entre la superficie y el nivel de
+referencia.}
+
+Para el semicilindro de radio $R$ y longitud $L$ de P7--P8, el volumen relevante es el
+de un semicilindro, $V=\dfrac{\pi R^2}{2}L$, de modo que el empuje vertical es
+\[
+\boxed{E=\rho g\,\frac{\pi R^2}{2}\,L}
+\]
+aplicado en el centroide del semic\'irculo, a una distancia $\dfrac{4R}{3\pi}$ del
+centro (dato entregado en el enunciado). Usada en P8, junto al equilibrio de momentos
+en torno a la r\'otula (torque de $E$, torque de la fuerza horizontal $F_1$ de la
+Herramienta 10, y el peso $Mg$ del disco) para despejar la masa l\'imite $M$.
+
+\end{document}

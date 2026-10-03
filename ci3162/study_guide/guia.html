@@ -1,0 +1,588 @@
+<title>Guía Clase Auxiliar C1</title>
+<meta name="description" content="Referencia teórica completa — fórmulas, deducciones y preguntas trampa para los 4 problemas de la Clase Auxiliar C1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ============ tokens ============ */
+:root{
+  --bg:#F6F5F0;
+  --surface:#FFFFFF;
+  --surface-2:#ECEBE3;
+  --surface-3:#E2E1D6;
+  --ink:#1E2A27;
+  --ink-muted:#57655F;
+  --ink-faint:#8A968F;
+  --accent:#0B6E8F;
+  --accent-ink:#04384A;
+  --accent-soft:#DCEEF2;
+  --warm:#AD5A24;
+  --warm-soft:#F5E4D4;
+  --line:#DBD9CD;
+  --line-soft:#E9E7DC;
+  --shadow:0 1px 2px rgba(30,42,39,.06), 0 8px 24px rgba(30,42,39,.05);
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10171A;
+    --surface:#161F22;
+    --surface-2:#1C282B;
+    --surface-3:#233134;
+    --ink:#E7ECE8;
+    --ink-muted:#9FB0AA;
+    --ink-faint:#657672;
+    --accent:#57BEDD;
+    --accent-ink:#CDEFFA;
+    --accent-soft:#1B3640;
+    --warm:#E49760;
+    --warm-soft:#3A2A1D;
+    --line:#2A3639;
+    --line-soft:#22302F;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10171A;
+  --surface:#161F22;
+  --surface-2:#1C282B;
+  --surface-3:#233134;
+  --ink:#E7ECE8;
+  --ink-muted:#9FB0AA;
+  --ink-faint:#657672;
+  --accent:#57BEDD;
+  --accent-ink:#CDEFFA;
+  --accent-soft:#1B3640;
+  --warm:#E49760;
+  --warm-soft:#3A2A1D;
+  --line:#2A3639;
+  --line-soft:#22302F;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+
+/* ============ base ============ */
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Public Sans',system-ui,-apple-system,sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces',Georgia,serif;
+  font-weight:700;
+  color:var(--ink);
+  text-wrap:balance;
+  margin:0;
+}
+p{margin:0 0 .85em; max-width:66ch;}
+a{color:var(--accent);}
+code, .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+
+/* ============ math (hand-set, no external deps — renders everywhere) ============ */
+.m{font-family:'Fraunces',Georgia,serif; font-style:italic;}
+.m .mu{font-style:normal;} /* upright: operators, functions, connectors */
+.frac{display:inline-flex; flex-direction:column; vertical-align:middle; text-align:center; margin:0 .14em; line-height:1.28;}
+.frac .num{padding:0 .22em .06em; border-bottom:1.4px solid currentColor;}
+.frac .den{padding:.08em .22em 0;}
+.intb{display:inline-flex; align-items:center; margin:0 .06em;}
+.intb .sym{font-size:1.55em; font-style:normal; line-height:.7;}
+.intb .bnd{display:inline-flex; flex-direction:column; font-size:.56em; font-style:italic; line-height:1.05; margin-left:-.1em; transform:translateY(2px);}
+.intb .bnd .hi{margin-bottom:.55em;}
+sup, sub{font-size:.68em;}
+
+/* ============ shell layout ============ */
+.shell{display:flex; max-width:1280px; margin:0 auto;}
+.sidebar{
+  width:258px; flex:none;
+  position:sticky; top:0; align-self:flex-start;
+  height:100vh; overflow-y:auto;
+  padding:28px 18px 28px 28px;
+  border-right:1px solid var(--line);
+  scrollbar-width:thin;
+}
+.sidebar-brand{
+  font-family:'Fraunces',serif; font-weight:700; font-size:1.02rem;
+  letter-spacing:-.01em; margin-bottom:2px;
+}
+.sidebar-sub{
+  font-size:.72rem; color:var(--ink-muted); letter-spacing:.04em; text-transform:uppercase;
+  margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--line);
+}
+.toc-group{margin-bottom:4px;}
+.toc-num{
+  display:inline-block; width:1.4em; color:var(--accent); font-family:'IBM Plex Mono',monospace;
+  font-size:.78rem; font-weight:600;
+}
+.toc-link{
+  display:block; padding:6px 8px; margin:0 -8px; border-radius:6px;
+  font-size:.86rem; font-weight:600; color:var(--ink); text-decoration:none;
+  transition:background .12s ease;
+}
+.toc-link:hover{background:var(--surface-2);}
+.toc-sub{margin:2px 0 10px 1.4em; padding-left:8px; border-left:1px solid var(--line);}
+.toc-sub a{
+  display:block; padding:3px 0 3px 8px; font-size:.76rem; color:var(--ink-muted);
+  text-decoration:none; font-family:'IBM Plex Mono',monospace;
+}
+.toc-sub a:hover{color:var(--accent);}
+
+.main{flex:1; min-width:0; padding:44px 48px 120px; max-width:920px;}
+
+/* ============ hero / header ============ */
+.doc-header{margin-bottom:40px; padding-bottom:28px; border-bottom:2px solid var(--ink);}
+.doc-kicker{
+  font-family:'IBM Plex Mono',monospace; font-size:.76rem; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:10px;
+}
+.doc-title{font-size:2.5rem; line-height:1.08; margin-bottom:12px;}
+.doc-title em{color:var(--accent); font-style:italic;}
+.doc-meta{display:flex; gap:22px; flex-wrap:wrap; color:var(--ink-muted); font-size:.88rem;}
+.doc-meta strong{color:var(--ink); font-weight:600;}
+
+/* ============ sections ============ */
+section.topic{margin-bottom:56px; scroll-margin-top:24px;}
+.topic-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px;}
+.topic-index{
+  font-family:'Fraunces',serif; font-weight:600; font-style:italic; font-size:1.6rem; color:var(--accent);
+}
+.topic-title{font-size:1.68rem;}
+.topic-dek{color:var(--ink-muted); font-size:.95rem; margin:6px 0 22px; max-width:62ch;}
+
+h3.sub-title{
+  font-size:1.08rem; margin:30px 0 12px; padding-top:6px;
+  display:flex; align-items:center; gap:10px;
+}
+h3.sub-title::before{content:""; width:16px; height:2px; background:var(--warm); display:inline-block;}
+
+/* ============ equation blocks ============ */
+.eq-wrap{margin:16px 0 20px;}
+.eq{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px 22px; overflow-x:auto; box-shadow:var(--shadow);
+}
+.eq-formula{
+  font-family:'Fraunces',serif; font-style:italic; font-size:1.22rem; color:var(--ink);
+  display:flex; align-items:center; justify-content:center; gap:.28em; flex-wrap:wrap;
+}
+.eq-formula .op{font-style:normal; color:var(--ink-muted); margin:0 .05em;}
+.eq-caption{
+  margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);
+  font-size:.82rem; color:var(--ink-muted); font-style:normal; font-family:'Public Sans',sans-serif;
+}
+.boxed{
+  border:1.6px solid var(--accent); border-radius:8px; padding:14px 20px; background:var(--accent-soft);
+}
+.boxed .eq-formula{color:var(--accent-ink);}
+.result-tag{
+  display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:.72rem; font-weight:600;
+  letter-spacing:.05em; text-transform:uppercase; color:var(--accent); background:var(--accent-soft);
+  padding:3px 9px; border-radius:20px; margin-bottom:10px;
+}
+
+/* ============ glossary table ============ */
+.glossary{
+  display:grid; grid-template-columns:auto 1fr; gap:0;
+  border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin:16px 0 20px;
+  background:var(--surface);
+}
+.glossary > div{padding:9px 16px; border-bottom:1px solid var(--line-soft); font-size:.88rem;}
+.glossary > div:nth-last-child(-n+2){border-bottom:none;}
+.glossary .term{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:600; color:var(--accent);
+  background:var(--surface-2); white-space:nowrap;
+}
+.glossary .def{color:var(--ink-muted);}
+.glossary .def b{color:var(--ink); font-weight:600;}
+
+/* ============ trampa callout ============ */
+.trampas{
+  border-left:3px solid var(--warm); background:var(--warm-soft); border-radius:0 var(--radius) var(--radius) 0;
+  padding:16px 20px 6px; margin:24px 0 8px;
+}
+.trampas-head{
+  display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace;
+  font-size:.76rem; letter-spacing:.07em; text-transform:uppercase; font-weight:600; color:var(--warm);
+  margin-bottom:12px;
+}
+.trampa{margin-bottom:16px;}
+.trampa .q{font-weight:600; color:var(--ink); margin-bottom:3px;}
+.trampa .q::before{content:"¿ "; color:var(--warm);}
+.trampa .a{color:var(--ink-muted); font-size:.93rem; margin:0;}
+
+/* ============ mini table (shapes reference etc) ============ */
+.mini-table{width:100%; border-collapse:collapse; margin:14px 0 22px; font-size:.87rem;}
+.mini-table th{
+  text-align:left; font-family:'IBM Plex Mono',monospace; font-size:.72rem; text-transform:uppercase;
+  letter-spacing:.05em; color:var(--ink-muted); font-weight:600; padding:8px 14px; border-bottom:1.5px solid var(--ink);
+}
+.mini-table td{padding:9px 14px; border-bottom:1px solid var(--line-soft); vertical-align:middle;}
+.mini-table tr:last-child td{border-bottom:none;}
+
+/* ============ cheat strip ============ */
+.cheat{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-bottom:44px;
+}
+@media (max-width:760px){ .cheat{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:480px){ .cheat{grid-template-columns:1fr;} }
+.cheat-item{background:var(--surface); padding:14px 16px;}
+.cheat-item .k{font-family:'IBM Plex Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); margin-bottom:8px;}
+.cheat-item .v{font-family:'Fraunces',serif; font-style:italic; font-size:.98rem; color:var(--ink);}
+
+/* ============ footer / divider ============ */
+.divider{height:1px; background:var(--line); margin:52px 0;}
+.end-note{color:var(--ink-faint); font-size:.82rem; text-align:center; padding:20px 0 40px;}
+
+@media (max-width:880px){
+  .sidebar{display:none;}
+  .main{padding:32px 20px 90px; max-width:100%;}
+  .doc-title{font-size:1.9rem;}
+}
+</style>
+
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sidebar-brand">Guía Clase Auxiliar C1</div>
+    <div class="sidebar-sub">Mecánica de Fluidos · CI3162</div>
+
+    <div class="toc-group"><a class="toc-link" href="#fundamentos"><span class="toc-num">00</span>Fundamentos</a></div>
+    <div class="toc-sub">
+      <a href="#hidrostatica">Hidrostática básica</a>
+      <a href="#puntos-aplicacion">Puntos de aplicación</a>
+      <a href="#viscosidad">Ley de Newton (viscosidad)</a>
+      <a href="#ns">Navier–Stokes reducido</a>
+    </div>
+
+    <div class="toc-group"><a class="toc-link" href="#p1"><span class="toc-num">01</span>Viscosímetro</a></div>
+    <div class="toc-sub">
+      <a href="#p1-flujo">Flujo de Couette anular</a>
+      <a href="#p1-torque">Torque viscoso</a>
+      <a href="#p1-trampas">Preguntas trampa</a>
+    </div>
+
+    <div class="toc-group"><a class="toc-link" href="#p2"><span class="toc-num">02</span>Compuerta plana</a></div>
+    <div class="toc-sub">
+      <a href="#p2-fuerza">Fuerza resultante</a>
+      <a href="#p2-yr">Centro de presión y<sub>R</sub></a>
+      <a href="#p2-trampas">Preguntas trampa</a>
+    </div>
+
+    <div class="toc-group"><a class="toc-link" href="#p3"><span class="toc-num">03</span>Compuerta esférica</a></div>
+    <div class="toc-sub">
+      <a href="#p3-curva">Superficies curvas</a>
+      <a href="#p3-cuerpolibre">Método de cuerpo libre</a>
+      <a href="#p3-trampas">Preguntas trampa</a>
+    </div>
+
+    <div class="toc-group"><a class="toc-link" href="#p4"><span class="toc-num">04</span>Compuerta semicilíndrica</a></div>
+    <div class="toc-sub">
+      <a href="#p4-momentos">Momentos vs. fuerzas</a>
+      <a href="#p4-prisma">Prisma de presiones</a>
+      <a href="#p4-trampas">Preguntas trampa</a>
+    </div>
+
+    <div class="toc-group"><a class="toc-link" href="#faq"><span class="toc-num">05</span>Trampas transversales</a></div>
+  </nav>
+
+  <main class="main">
+
+    <header class="doc-header">
+      <div class="doc-kicker">Material de preparación docente</div>
+      <h1 class="doc-title">Todo lo que puede <em>preguntarte</em><br>un alumno el viernes</h1>
+      <div class="doc-meta">
+        <span><strong>Curso</strong> CI3162 Mecánica de Fluidos</span>
+        <span><strong>Sesión</strong> Clase Auxiliar C1 — Viernes 4 de Septiembre</span>
+        <span><strong>Cobertura</strong> Problemas 1–4 + fundamentos transversales</span>
+      </div>
+    </header>
+
+    <div class="cheat">
+      <div class="cheat-item"><div class="k">P1 — Torque viscoso</div><div class="v">T = 4πμHω R<sub>e</sub>²R<sub>i</sub>² / (R<sub>e</sub>²−R<sub>i</sub>²)</div></div>
+      <div class="cheat-item"><div class="k">P2 — Centro de presión</div><div class="v">y<sub>R</sub> = y<sub>G</sub> + I<sub>xG</sub> / (S y<sub>G</sub>)</div></div>
+      <div class="cheat-item"><div class="k">P3 — Fuerza sobre calota</div><div class="v">F = (P−P<sub>atm</sub>)πR² ± ρg·⅔πR³</div></div>
+      <div class="cheat-item"><div class="k">P4 — Centroide semicírculo</div><div class="v">x<sub>G</sub> = 4R / (3π)</div></div>
+    </div>
+
+    <!-- ============================================================ -->
+    <section class="topic" id="fundamentos">
+      <div class="topic-head"><span class="topic-index">00</span><h2 class="topic-title">Fundamentos transversales</h2></div>
+      <p class="topic-dek">Lo que sostiene los cuatro problemas. Si un alumno pregunta "¿por qué...?" en cualquier parte del desarrollo, casi siempre la respuesta está aquí.</p>
+
+      <h3 class="sub-title" id="hidrostatica">Hidrostática básica</h3>
+      <p>Para un fluido en reposo, el gradiente de presión equilibra exactamente el peso específico: <span class="m"><span class="mu">∇P = ρg</span></span>. Con <i>z</i> apuntando hacia arriba, esto se reduce a una EDO de primer orden:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        <span class="frac"><span class="num">dP</span><span class="den">dz</span></span> <span class="op">=</span> −ρg
+        <span class="op">⟹</span>
+        P(z) <span class="op">=</span> P<sub>0</sub> <span class="op">+</span> ρg·h
+      </div><div class="eq-caption"><b>h</b> = profundidad medida desde el punto de presión de referencia P<sub>0</sub> (hacia abajo, en la dirección de g). Válida para ρ constante (líquido incompresible).</div></div></div>
+
+      <div class="glossary">
+        <div class="term">Manométrica</div><div class="def">P<sub>man</sub> = P<sub>abs</sub> − P<sub>atm</sub>. En todos los problemas de esta clase se trabaja en manométrica porque P<sub>atm</sub> actúa en ambos lados de cada compuerta y <b>se cancela</b> del balance neto — no porque se "olvide".</div>
+        <div class="term">Paradoja hidrostática</div><div class="def">La presión en un punto depende <b>sólo de la profundidad</b>, nunca de la forma del recipiente ni del volumen total de líquido sobre él.</div>
+        <div class="term">Principio de Pascal</div><div class="def">Una variación de presión aplicada en un punto de un fluido confinado se transmite <b>íntegra</b> a todos los puntos del fluido — es lo que permite que P<sub>g</sub> (gas) o P<sub>0</sub> se sumen directamente a la columna hidrostática.</div>
+      </div>
+
+      <h3 class="sub-title" id="puntos-aplicacion">Puntos de aplicación de fuerzas distribuidas</h3>
+      <p>Reemplazar una fuerza distribuida (como la presión sobre un área) por una única fuerza resultante exige cumplir <b>dos</b> condiciones, no una: (1) misma magnitud total — eso da F=∬P dA — y (2) <b>el mismo torque</b> respecto de cualquier punto. La condición (1) no fija dónde actúa la fuerza: hace falta la (2) para eso. El punto que la cumple es el <b>punto de aplicación</b> (o centro de presión).</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        F·z<sub>p</sub> <span class="op">=</span> <span class="intb"><span class="sym">∫</span></span> z dF <span class="op">=</span> <span class="intb"><span class="sym">∫</span></span> z·P dA
+        <span class="op">⟹</span>
+        z<sub>p</sub> <span class="op">=</span> <span class="frac"><span class="num">∫ z·P dA</span><span class="den">F</span></span>
+      </div><div class="eq-caption">Si la fuerza se divide en pedazos conocidos F<sub>1</sub>,F<sub>2</sub>,… con puntos de aplicación z<sub>1</sub>,z<sub>2</sub>,…, por linealidad del torque esto se reduce a un promedio ponderado: <span class="mono">z<sub>p</sub> = (F<sub>1</sub>z<sub>1</sub>+F<sub>2</sub>z<sub>2</sub>+…)/(F<sub>1</sub>+F<sub>2</sub>+…)</span> — la misma fórmula que da y<sub>R</sub> en el Problema 2 (P2) y z<sub>g</sub> en el Problema 4 (P4).</div></div></div>
+      <p><b>¿Por qué no coincide con el centroide del área?</b> Si la presión fuera uniforme, cada elemento de área aportaría fuerza proporcional sólo a su área, y ponderar por fuerza sería lo mismo que ponderar por área — el punto de aplicación coincidiría con el centroide geométrico. Pero la presión hidrostática crece con la profundidad, así que la zona más profunda aporta más fuerza por unidad de área que la superficial: eso desplaza el punto de aplicación hacia el lado más profundo. Es la misma razón, aplicada dos veces en este curso, detrás de y<sub>R</sub>&gt;y<sub>G</sub> (P2) y de que z<sub>g</sub> en P4 quede corrido hacia O en vez de al centro geométrico de la compuerta.</p>
+
+      <h3 class="sub-title" id="viscosidad">Ley de viscosidad de Newton</h3>
+      <p>Para un fluido newtoniano en corte simple, el esfuerzo de corte es proporcional al gradiente de velocidad transversal al flujo:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">τ <span class="op">=</span> μ <span class="frac"><span class="num">du</span><span class="den">dy</span></span></div>
+      <div class="eq-caption">μ = viscosidad dinámica [Pa·s]. La viscosidad cinemática ν = μ/ρ [m²/s] aparece cuando el dato viene en cSt (centistokes): 1 cSt = 10⁻⁶ m²/s.</div></div></div>
+
+      <h3 class="sub-title" id="ns">Navier–Stokes reducido (régimen de Stokes)</h3>
+      <p>Cuando el número de Reynolds es bajo (fluido muy viscoso, velocidades moderadas), el término convectivo/inercial de Navier–Stokes es despreciable frente al viscoso. Lo que queda es un balance puramente difusivo — es la base de toda la deducción del Problema 1:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">0 <span class="op">=</span> −∇P <span class="op">+</span> μ∇²u</div>
+      <div class="eq-caption">Sin el término (u·∇)u. Es lo que convierte una PDE no lineal en una ODE lineal resoluble a mano.</div></div></div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <section class="topic" id="p1">
+      <div class="topic-head"><span class="topic-index">01</span><h2 class="topic-title">Viscosímetro de cilindros concéntricos</h2></div>
+      <p class="topic-dek">Un carro amarrado a una cuerda enrollada en un cilindro que gira dentro de otro fijo, separados por un lubricante. Es un problema de <b>flujo de Couette anular</b> acoplado a un equilibrio de torques de cuerpo rígido.</p>
+
+      <h3 class="sub-title" id="p1-flujo">Flujo de Couette anular</h3>
+      <p>Navier–Stokes, componente tangencial, axisimétrica y estacionaria, se reduce a una ecuación de segundo orden que se integra dos veces:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        <span class="op">d/dr</span>&#91;<span class="frac"><span class="num">1</span><span class="den">r</span></span> <span class="op">d(ru</span><sub>θ</sub><span class="op">)/dr</span>&#93; <span class="op">=</span> 0
+        <span class="op">⟹</span>
+        u<sub>θ</sub>(r) <span class="op">=</span> Ar <span class="op">+</span> <span class="frac"><span class="num">B</span><span class="den">r</span></span>
+      </div><div class="eq-caption">La solución es la superposición de una rotación de cuerpo rígido (<i>Ar</i>) y un vórtice potencial (<i>B/r</i>). Las constantes A, B salen de las dos condiciones de no-deslizamiento: u<sub>θ</sub>(R<sub>i</sub>)=0 (fijo), u<sub>θ</sub>(R<sub>e</sub>)=ωR<sub>e</sub> (gira).</div></div></div>
+
+      <h3 class="sub-title" id="p1-torque">Torque viscoso</h3>
+      <p>El torque se obtiene integrando el esfuerzo de corte sobre la superficie lateral de un cilindro de radio r, multiplicado por su brazo de palanca r:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        T <span class="op">=</span>
+        <span class="intb"><span class="sym">∫</span><span class="bnd"><span class="hi">H</span><span class="lo">0</span></span></span><span class="intb"><span class="sym">∫</span><span class="bnd"><span class="hi">2π</span><span class="lo">0</span></span></span>
+        τ<sub>rθ</sub>(r dθ dz)·r <span class="op">=</span> 2πHr²τ<sub>rθ</sub>
+      </div><div class="eq-caption"><b>Resultado clave:</b> T no depende de r — es <b>constante en todo el anillo</b> (conservación de momento angular en estado estacionario, sin fuerzas de cuerpo netas en θ). Por eso el torque medido en cualquier radio intermedio es el mismo que en las paredes.</div></div></div>
+
+      <div class="eq-wrap boxed"><span class="result-tag">Fórmula final</span><div class="eq-formula">
+        T<sub>visc</sub> <span class="op">=</span> 4πμHω <span class="frac"><span class="num">R<sub>e</sub>²R<sub>i</sub>²</span><span class="den">R<sub>e</sub>² − R<sub>i</sub>²</span></span>
+      </div></div>
+
+      <p>Se acopla al problema físico con <i>ω = U/R<sub>e</sub></i> (la cuerda no desliza sobre el cilindro exterior) y con el equilibrio de torques del carro a velocidad constante:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">T<sub>visc</sub> <span class="op">=</span> T<sub>peso</sub> <span class="op">=</span> Mg sinα · R<sub>e</sub></div>
+      <div class="eq-caption">Brazo R<sub>e</sub> porque la cuerda se enrolla en el cilindro exterior — es el radio efectivo de la "polea".</div></div></div>
+
+      <div class="glossary">
+        <div class="term">u<sub>θ</sub>(r)</div><div class="def">Velocidad tangencial del fluido a radio r.</div>
+        <div class="term">τ<sub>rθ</sub></div><div class="def">Esfuerzo de corte tangencial sobre una superficie de normal r̂. <b>τ<sub>rθ</sub> = μr·d/dr(u<sub>θ</sub>/r)</b> — nótese que no es simplemente μ du<sub>θ</sub>/dr (esa forma sólo vale en coordenadas cartesianas).</div>
+        <div class="term">ω</div><div class="def">Velocidad angular del cilindro exterior [rad/s].</div>
+        <div class="term">ν, cSt</div><div class="def">Viscosidad cinemática; 1 centistoke = 10⁻⁶ m²/s. μ = ρ·ν.</div>
+      </div>
+
+      <div class="trampas" id="p1-trampas">
+        <div class="trampas-head">⚠ Preguntas trampa</div>
+        <div class="trampa"><div class="q">por qué el torque no depende del radio donde se evalúa?</div><p class="a">Porque en estado estacionario, sin torques externos actuando dentro del anillo, el momento angular transportado a través de cualquier superficie cilíndrica intermedia debe ser el mismo — es un principio de conservación, no una coincidencia algebraica.</p></div>
+        <div class="trampa"><div class="q">qué pasa si el cilindro interior también girara?</div><p class="a">Cambia la condición de borde u<sub>θ</sub>(R<sub>i</sub>)=0 por u<sub>θ</sub>(R<sub>i</sub>)=ω<sub>i</sub>R<sub>i</sub>; las constantes A, B se recalculan pero la estructura de la solución (Ar+B/r) no cambia.</p></div>
+        <div class="trampa"><div class="q">por qué se puede despreciar el término convectivo?</div><p class="a">Porque el número de Reynolds del flujo en el anillo es bajo (lubricante viscoso, velocidades moderadas, espesor de anillo pequeño) — régimen de Stokes.</p></div>
+        <div class="trampa"><div class="q">τ<sub>rθ</sub> = μ du<sub>θ</sub>/dr, como en un caso cartesiano simple?</div><p class="a">No. En coordenadas cilíndricas con simetría axial, la fórmula correcta incluye una corrección por curvatura: τ<sub>rθ</sub> = μr d/dr(u<sub>θ</sub>/r). Usar du<sub>θ</sub>/dr directamente es el error más común en este problema.</p></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <section class="topic" id="p2">
+      <div class="topic-head"><span class="topic-index">02</span><h2 class="topic-title">Compuerta plana circular</h2></div>
+      <p class="topic-dek">Una compuerta circular inclinada separa dos columnas de agua de distinta altura. El problema clásico de <b>fuerza resultante y centro de presión</b> sobre una superficie plana sumergida.</p>
+
+      <h3 class="sub-title" id="p2-fuerza">Fuerza resultante</h3>
+      <p>Con y medido a lo largo del plano desde la superficie libre (profundidad vertical = y sinθ), la presión crece linealmente. Integrando sobre el área:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        F <span class="op">=</span> <span class="intb"><span class="sym">∬</span></span> P dA <span class="op">=</span> (P<sub>0</sub> <span class="op">+</span> ρg·y<sub>G</sub> sinθ)·S
+      </div><div class="eq-caption">Válido usando el <b>centroide</b> y<sub>G</sub> porque el promedio de una función lineal sobre un área es exactamente su valor en el centroide — esto es sólo cierto porque la presión varía linealmente con la profundidad.</div></div></div>
+
+      <h3 class="sub-title" id="p2-yr">Centro de presión y<sub>R</sub></h3>
+      <p><b>y<sub>G</sub> da la magnitud de la fuerza; y<sub>R</sub> da dónde actúa.</b> No son el mismo punto: como la presión es mayor en la parte profunda que en la superficial, esa zona "pesa más" en el torque de lo que su área sola sugiere. y<sub>R</sub> se define exigiendo que el torque de la fuerza puntual equivalente coincida con el torque real de la presión distribuida:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        F·y<sub>R</sub> <span class="op">=</span> <span class="intb"><span class="sym">∬</span></span> P·y dA <span class="op">=</span> ρg sinθ·I<sub>x</sub>
+      </div><div class="eq-caption">I<sub>x</sub> = segundo momento de área respecto de y=0 (la superficie libre) — <b>no</b> respecto del eje centroidal.</div></div></div>
+      <p>Con el teorema de ejes paralelos, I<sub>x</sub> = I<sub>xG</sub> + S y<sub>G</sub>², se obtiene la fórmula de uso directo:</p>
+      <div class="eq-wrap boxed"><span class="result-tag">Fórmula final</span><div class="eq-formula">
+        y<sub>R</sub> <span class="op">=</span> y<sub>G</sub> <span class="op">+</span> <span class="frac"><span class="num">I<sub>xG</sub></span><span class="den">S·y<sub>G</sub></span></span>
+      </div></div>
+      <p>El brazo respecto de la rótula (no de la superficie libre) se obtiene restando la distancia rótula–superficie: <span class="mono">b = y<sub>R</sub> − H<sub>1</sub>/sinθ</span>. Para un círculo de diámetro D, sustituyendo S y I<sub>xG</sub>, el término H<sub>1</sub>/sinθ se cancela y queda <span class="mono">b = D/2 + D²/(16 y<sub>G</sub>)</span>.</p>
+
+      <table class="mini-table">
+        <tr><th>Figura</th><th>Área S</th><th>I<sub>xG</sub> (eje centroidal horizontal)</th></tr>
+        <tr><td>Círculo, diámetro D</td><td>πD²/4</td><td>πD⁴/64</td></tr>
+        <tr><td>Rectángulo, base b, altura h</td><td>b·h</td><td>b·h³/12</td></tr>
+        <tr><td>Triángulo, base b, altura h</td><td>b·h/2</td><td>b·h³/36</td></tr>
+      </table>
+
+      <div class="glossary">
+        <div class="term">y<sub>G</sub></div><div class="def">Centroide del área, medido a lo largo del plano desde la superficie libre.</div>
+        <div class="term">y<sub>R</sub></div><div class="def">Centro de presión: punto de aplicación real de la fuerza resultante. Siempre más profundo que y<sub>G</sub> (salvo I<sub>xG</sub>→0).</div>
+        <div class="term">I<sub>xG</sub></div><div class="def">Segundo momento de área respecto al eje centroidal — mide cuánto se "dispersa" el área lejos del centroide; es exactamente lo que genera la diferencia entre y<sub>R</sub> y y<sub>G</sub>.</div>
+      </div>
+
+      <div class="trampas" id="p2-trampas">
+        <div class="trampas-head">⚠ Preguntas trampa</div>
+        <div class="trampa"><div class="q">y<sub>G</sub> y y<sub>R</sub> son el mismo punto?</div><p class="a">No — es el error conceptual más común del problema. Coinciden sólo en el caso límite de área muy compacta o presión aproximadamente uniforme (I<sub>xG</sub>/(Sy<sub>G</sub>)→0).</p></div>
+        <div class="trampa"><div class="q">por qué no basta usar F aplicada en el centroide para calcular el torque?</div><p class="a">Porque el torque de una fuerza distribuida no equivale al de su resultante aplicada en el centroide de área — equivale al de su resultante aplicada en el centro de <b>presión</b>, que pondera cada punto por su profundidad (presión), no sólo por su área.</p></div>
+        <div class="trampa"><div class="q">qué pasa si hay una presión P<sub>0</sub>≠0 superpuesta (ej. un gas empujando)?</div><p class="a">La fórmula y<sub>R</sub>=y<sub>G</sub>+I<sub>xG</sub>/(Sy<sub>G</sub>) asume P<sub>0</sub>=0 en el origen de y. Si P<sub>0</sub>≠0 hay que re-derivar incluyendo ese término en la integral de momento — el resultado ya no es tan limpio.</p></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <section class="topic" id="p3">
+      <div class="topic-head"><span class="topic-index">03</span><h2 class="topic-title">Compuerta esférica</h2></div>
+      <p class="topic-dek">Un cilindro con tres capas (líquido, líquido, gas) tapado por una compuerta esférica. El problema de <b>fuerza sobre superficies curvas</b>, y una lección de geometría: dónde está exactamente la rótula cambia todo el planteamiento.</p>
+
+      <h3 class="sub-title" id="p3-curva">Fuerza sobre superficies curvas — dos métodos</h3>
+      <div class="glossary">
+        <div class="term">Integración directa</div><div class="def">dF = P dA en cada punto de la superficie, proyectando sobre los ejes de interés. Funciona siempre, pero requiere parametrizar la superficie (coordenadas esféricas, etc.).</div>
+        <div class="term">Cuerpo libre + 3ª ley</div><div class="def">Se aísla un volumen <b>ficticio</b> de fluido con la misma forma que ocupa la superficie curva, se aplica equilibrio estático sobre ese volumen, y la fuerza que "la compuerta" ejercería sobre ese fluido ficticio es —por la 3ª ley de Newton— igual y opuesta a la que el fluido real ejerce sobre la compuerta real.</div>
+      </div>
+      <p>Regla general para la <b>componente vertical</b> de la fuerza sobre una superficie curva: es igual al peso del volumen de fluido (real o virtual) comprendido entre la superficie y la referencia de presión — hacia abajo si el fluido está "encima" empujando, hacia arriba (tipo Arquímedes) si el volumen es virtual (la superficie desplaza al fluido).</p>
+
+      <h3 class="sub-title" id="p3-cuerpolibre">La lección geométrica de este problema</h3>
+      <p>La compuerta es una <b>esfera completa</b>, rotulada en su <b>plano ecuatorial</b> — no una semiesfera rotulada en su borde. Esto separa la esfera en dos hemisferios con roles distintos, y obliga a distinguir <b>dos presiones de referencia diferentes</b> según qué parte del problema se esté resolviendo:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        P<sub>A</sub> <span class="op">=</span> P<sub>g</sub> <span class="op">+</span> ρ<sub>2</sub>g<span class="frac"><span class="num">H</span><span class="den">3</span></span> <span class="op">+</span> ρ<sub>1</sub>g<span class="op">(</span><span class="frac"><span class="num">H</span><span class="den">3</span></span> <span class="op">−</span> R<span class="op">)</span>
+      </div><div class="eq-caption"><b>Presión en el polo</b> (punto más alto de la compuerta) — se resta R porque el polo queda a esa altura por encima del plano de la rótula.</div></div></div>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        P<sub>O</sub> <span class="op">=</span> P<sub>g</sub> <span class="op">+</span> g<span class="frac"><span class="num">H</span><span class="den">3</span></span>(ρ<sub>1</sub><span class="op">+</span>ρ<sub>2</sub>)
+      </div><div class="eq-caption"><b>Presión en el ecuador</b> (profundidad de la rótula) — sin restar R. Es la que corresponde al corte plano del método de cuerpo libre, porque ahí es exactamente donde se "parte" la esfera en dos hemisferios.</div></div></div>
+      <div class="eq-wrap boxed"><span class="result-tag">Fuerza sobre la rótula</span><div class="eq-formula">
+        F <span class="op">=</span> (P<sub>O</sub> <span class="op">−</span> P<sub>atm</sub>)πR² <span class="op">−</span> ρ<sub>1</sub>g<span class="frac"><span class="num">2</span><span class="den">3</span></span>πR³
+      </div></div>
+      <p>El signo del segundo término depende enteramente de la orientación del hemisferio (si el domo "desplaza" líquido hacia arriba o si el líquido lo cubre desde arriba) — de ahí que un error de geometría (semiesfera vs. esfera) cambie el signo del resultado final, no sólo su magnitud.</p>
+
+      <div class="glossary">
+        <div class="term">Esfera / semiesfera</div><div class="def">Volumen esfera = 4/3 πR³; hemisferio = 2/3 πR³. Confundir cuál de los dos es la compuerta cambia tanto la geometría de la rótula como el volumen que entra en el balance de fuerzas.</div>
+        <div class="term">P<sub>A</sub> vs. P<sub>O</sub></div><div class="def">Dos puntos distintos de la misma esfera (polo vs. ecuador) a distinta profundidad. Confundirlos es el error #1 de este problema.</div>
+      </div>
+
+      <div class="trampas" id="p3-trampas">
+        <div class="trampas-head">⚠ Preguntas trampa</div>
+        <div class="trampa"><div class="q">por qué la fuerza neta puede dar negativa?</div><p class="a">Es una convención de signo, no un error: significa que la fuerza resultante apunta en el sentido contrario al que se definió como positivo (por ejemplo, hacia arriba en vez de hacia abajo).</p></div>
+        <div class="trampa"><div class="q">se puede usar el centroide de área como en el caso plano (P2)?</div><p class="a">No en general. Esa simplificación (F=P̄·S usando el centroide) sólo funciona porque la presión es <b>lineal</b> en el caso plano. Sobre una superficie curva la dirección normal cambia punto a punto, así que hay que proyectar componente por componente.</p></div>
+        <div class="trampa"><div class="q">cómo se sabe qué presión usar (P<sub>A</sub> o P<sub>O</sub>) en cada parte?</div><p class="a">Depende de qué corte hace el método: si se pide la presión en un punto geométrico específico (el polo), se usa P en ese punto. Si se está aislando un cuerpo libre cortado por el plano de la rótula, se usa la presión exactamente en ese plano — que es P<sub>O</sub>, no P<sub>A</sub>.</p></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <section class="topic" id="p4">
+      <div class="topic-head"><span class="topic-index">04</span><h2 class="topic-title">Compuerta semicilíndrica</h2></div>
+      <p class="topic-dek">Una compuerta semicilíndrica separa un líquido de una cámara de gas, articulada en su extremo <b>inferior</b> — no en su centro de curvatura. Es el problema donde la intuición de "torque cero por simetría" falla, y hay que volver al equilibrio de momentos real.</p>
+
+      <h3 class="sub-title" id="p4-momentos">Por qué aquí sí hace falta equilibrio de momentos</h3>
+      <p>Cuando la rótula coincide con el <b>centro de curvatura</b> de una superficie circular, toda la presión actúa en dirección radial — es decir, pasa exactamente por ese punto — y el torque respecto de él es <b>automáticamente cero</b>, sin importar cómo varíe la presión. Esa es la trampa clásica: muchos alumnos aplican esa simplificación aquí sin verificar dónde está realmente la rótula.</p>
+      <p>En este problema, la rótula está en el extremo <b>inferior</b> del arco (a profundidad H<sub>1</sub>+2R), mientras que el centro de curvatura queda a una altura R por encima de ella. La resultante de presión, por lo tanto, <b>no</b> pasa por la rótula, y sí existe un torque neto que hay que equilibrar (ΣM<sub>O</sub>=0), no una simple suma de fuerzas.</p>
+
+      <h3 class="sub-title" id="p4-prisma">El prisma de presiones</h3>
+      <p>Como la presión P varía punto a punto sobre la compuerta, se puede imaginar un sólido cuya base es la superficie y cuya <b>altura en cada punto es el valor de la presión ahí</b> — el <i>prisma de presiones</i>. Dos resultados quedan regalados con esa imagen: el <b>volumen</b> de ese sólido es la fuerza total (F=∬P dA es, literalmente, un volumen), y el <b>centroide</b> de ese sólido es el punto de aplicación de F. Así, un problema de integrar presión se convierte en un problema de geometría de sólidos conocidos.</p>
+      <p>La presión crece linealmente en los 2R de altura de la compuerta: vale ρgH<sub>1</sub> en el tope y ρg(H<sub>1</sub>+2R) en O. El prisma de presiones, visto de perfil, es un <b>trapecio</b> — y se descompone en un rectángulo (la parte constante ρgH<sub>1</sub>, presente en toda la altura) más un triángulo (la parte que crece desde cero en el tope hasta ρg·2R en O):</p>
+
+      <figure style="margin:20px 0;">
+        <svg viewBox="0 0 460 340" role="img" aria-label="Prisma de presiones trapezoidal sobre la compuerta de altura 2R, descompuesto en un rectángulo de brazo z-cuadrado igual a R y un triángulo de brazo z-triángulo igual a 2R/3, ambos medidos desde la rótula O" style="width:100%;height:auto;max-width:460px;display:block;margin:0 auto;font-family:'IBM Plex Mono',monospace;">
+          <line x1="70" y1="60" x2="70" y2="280" style="stroke:var(--ink);stroke-width:3;" stroke-linecap="round"/>
+          <circle cx="70" cy="280" r="4.5" style="fill:var(--ink);"/>
+          <text x="70" y="300" text-anchor="middle" style="font-size:13px;fill:var(--ink);font-weight:600;">O</text>
+          <text x="70" y="46" text-anchor="middle" style="font-size:11px;fill:var(--ink-muted);">tope (prof. H&#8321;)</text>
+
+          <polygon points="70,60 120,60 120,280 70,280" style="fill:var(--accent-soft);stroke:var(--ink);stroke-width:1.3;"/>
+          <polygon points="120,60 120,280 250,280" style="fill:var(--warm-soft);stroke:var(--ink);stroke-width:1.3;"/>
+
+          <line x1="70" y1="170" x2="330" y2="170" style="stroke:var(--accent);stroke-width:1.3;stroke-dasharray:4 3;"/>
+          <circle cx="95" cy="170" r="3" style="fill:var(--accent);"/>
+          <line x1="70" y1="220" x2="360" y2="220" style="stroke:var(--warm);stroke-width:1.3;stroke-dasharray:4 3;"/>
+          <circle cx="163" cy="220" r="3" style="fill:var(--warm);"/>
+
+          <line x1="30" y1="280" x2="30" y2="170" style="stroke:var(--accent);stroke-width:1.3;" marker-end="url(#arrM)"/>
+          <text x="18" y="228" text-anchor="middle" style="font-size:13px;fill:var(--accent);">z&#9633;</text>
+          <line x1="46" y1="280" x2="46" y2="220" style="stroke:var(--warm);stroke-width:1.3;" marker-end="url(#arrM2)"/>
+          <text x="55" y="255" text-anchor="middle" style="font-size:13px;fill:var(--warm);">z&#9651;</text>
+
+          <text x="335" y="166" style="font-size:14px;fill:var(--accent);font-weight:600;">F&#9633; = &#961;gH&#8321;&middot;2R&middot;L</text>
+          <text x="365" y="216" style="font-size:14px;fill:var(--warm);font-weight:600;">F&#9651; = 2&#961;gR&sup2;L</text>
+
+          <text x="335" y="186" style="font-size:12px;fill:var(--ink-muted);">brazo z&#9633; = R</text>
+          <text x="365" y="236" style="font-size:12px;fill:var(--ink-muted);">brazo z&#9651; = &#8532;R</text>
+
+          <defs>
+            <marker id="arrM" markerWidth="7" markerHeight="7" refX="3.2" refY="3.2" orient="auto">
+              <path d="M0,0 L6.4,3.2 L0,6.4 Z" style="fill:var(--accent);"/>
+            </marker>
+            <marker id="arrM2" markerWidth="7" markerHeight="7" refX="3.2" refY="3.2" orient="auto">
+              <path d="M0,0 L6.4,3.2 L0,6.4 Z" style="fill:var(--warm);"/>
+            </marker>
+          </defs>
+        </svg>
+        <figcaption style="text-align:center;font-size:.82rem;color:var(--ink-muted);margin-top:8px;">El trapecio de presión (perfil de la compuerta, altura 2R) partido en un rectángulo (celeste) y un triángulo (ámbar) — cada uno con su propio centroide, medido como brazo de palanca desde O.</figcaption>
+      </figure>
+
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        F<sub>□</sub> <span class="op">=</span> ρgH<sub>1</sub>·2R·L<span class="op">,</span> z<sub>□</sub><span class="op">=</span>R
+        <span class="op">&nbsp;&nbsp;&nbsp;</span>
+        F<sub>△</sub> <span class="op">=</span> 2ρgR²L<span class="op">,</span> z<sub>△</sub><span class="op">=</span><span class="frac"><span class="num">2R</span><span class="den">3</span></span>
+      </div><div class="eq-caption">z = brazo de palanca medido <b>por encima</b> de la rótula O. El centroide del rectángulo está a su punto medio (R, la mitad de 2R); el del triángulo, a un tercio de su altura <b>desde la base mayor</b> — y la base mayor del triángulo (donde la presión es máxima) está justo en O: un tercio de la altura total (2R) es z<sub>△</sub>=⅓(2R)=⅔R, medido desde ahí. No es una receta: es partir el sólido trapezoidal en dos sólidos simples cuyo volumen (fuerza) y centroide (punto de aplicación) ya se conocen, y promediarlos ponderando por fuerza — la misma fórmula z<sub>p</sub>=(F<sub>1</sub>z<sub>1</sub>+F<sub>2</sub>z<sub>2</sub>)/(F<sub>1</sub>+F<sub>2</sub>) de la sección de Fundamentos.</div></div></div>
+
+      <p>A esto se suma el <b>empuje</b> (fuerza vertical, tipo Arquímedes) del líquido sobre el semicilindro — peso del volumen desplazado:</p>
+      <div class="eq-wrap"><div class="eq"><div class="eq-formula">
+        F<sub>v</sub> <span class="op">=</span> ρg<span class="frac"><span class="num">πR²</span><span class="den">2</span></span>L<span class="op">,</span>&nbsp; x<sub>G</sub><span class="op">=</span><span class="frac"><span class="num">4R</span><span class="den">3π</span></span>
+      </div><div class="eq-caption">x<sub>G</sub> = centroide de un semicírculo respecto de su diámetro — <b>fórmula que conviene memorizar</b>, aparece en cualquier problema con superficies semicirculares.</div></div></div>
+      <div class="eq-wrap boxed"><span class="result-tag">Equilibrio de momentos respecto de O</span><div class="eq-formula">
+        F<sub>GH</sub>·R <span class="op">=</span> F<sub>□</sub>z<sub>□</sub> <span class="op">+</span> F<sub>△</sub>z<sub>△</sub> <span class="op">+</span> F<sub>v</sub>x<sub>G</sub>
+      </div></div>
+      <p>Resolviendo, la condición de apertura resulta sorprendentemente simple: el gas debe alcanzar la presión hidrostática evaluada <b>en el centro geométrico del arco</b> (profundidad H<sub>1</sub>+R) — no en la rótula misma:</p>
+      <div class="eq-wrap boxed"><span class="result-tag">Fórmula final</span><div class="eq-formula">
+        P<sub>Gas</sub> <span class="op">=</span> ρg(H<sub>1</sub><span class="op">+</span>R)
+      </div></div>
+
+      <div class="glossary">
+        <div class="term">Empuje</div><div class="def">Componente vertical de la fuerza de presión sobre una superficie curva — siempre igual al peso del volumen (real o desplazado) de fluido asociado.</div>
+        <div class="term">F<sub>□</sub>, F<sub>△</sub></div><div class="def">Descomposición del prisma trapezoidal de presión en una parte uniforme (rectángulo) y una parte lineal creciente (triángulo) — técnica reutilizable en cualquier superficie plana vertical con presión no nula en ambos extremos.</div>
+        <div class="term">x<sub>G</sub> semicírculo</div><div class="def">4R/(3π) ≈ 0,424R, medido desde el diámetro hacia el arco. Sale de integrar x̄=(1/A)∬x dA en coordenadas polares.</div>
+      </div>
+
+      <div class="trampas" id="p4-trampas">
+        <div class="trampas-head">⚠ Preguntas trampa</div>
+        <div class="trampa"><div class="q">por qué no se puede decir simplemente "el torque es cero por simetría"?</div><p class="a">Esa simplificación sólo es válida cuando la rótula coincide con el centro de curvatura de la superficie (ahí toda fuerza de presión es radial y pasa por ese punto). Aquí la rótula está en el extremo del arco, a distancia R del centro de curvatura — la simplificación no aplica.</p></div>
+        <div class="trampa"><div class="q">de dónde sale x<sub>G</sub>=4R/(3π)?</div><p class="a">De integrar el primer momento de área de un semicírculo respecto de su diámetro: x̄ = (1/A)∬x dA, en coordenadas polares con x=r cosφ, φ∈[−π/2,π/2], r∈[0,R].</p></div>
+        <div class="trampa"><div class="q">por qué el gas no aporta componente vertical?</div><p class="a">Porque su densidad es despreciable — su prisma de presión es un simple rectángulo (uniforme), sin peso apreciable que integrar como empuje.</p></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ============================================================ -->
+    <section class="topic" id="faq">
+      <div class="topic-head"><span class="topic-index">05</span><h2 class="topic-title">Trampas transversales</h2></div>
+      <p class="topic-dek">Los errores que se repiten de un problema a otro — vale la pena tenerlos frescos independientemente de qué pregunten.</p>
+
+      <div class="glossary">
+        <div class="term">y<sub>G</sub> ≠ punto de aplicación</div><div class="def">El error #1 transversal a P2 y P3: el centroide de área da la <b>magnitud</b> de la fuerza; el centro de presión (o el método de cuerpo libre en superficies curvas) da <b>dónde</b> actúa. Nunca son automáticamente el mismo punto.</div>
+        <div class="term">"Torque cero" en curvas</div><div class="def">Sólo es cierto si el punto de referencia coincide con el <b>centro de curvatura</b> de la superficie (P4 es la prueba de que si no coincide, hay que hacer el balance de momentos completo).</div>
+        <div class="term">Radio vs. diámetro</div><div class="def">El error de factor 2 más común: verificar siempre si el dato de la tabla es D o R antes de sustituir en una fórmula.</div>
+        <div class="term">Profundidad vs. distancia a lo largo del plano</div><div class="def">En superficies inclinadas, la profundidad vertical es y·sinθ, no y. Olvidar el sinθ (o multiplicarlo de más) es un error recurrente en P2.</div>
+        <div class="term">Cancelación de P<sub>atm</sub></div><div class="def">Sólo se cancela cuando actúa <b>igual en ambos lados</b> de la superficie en cuestión. Si un lado tiene gas a presión distinta de 1 atm (P3, P4), no hay cancelación automática — hay que dejarla explícita en el balance.</div>
+        <div class="term">Convención de signos</div><div class="def">Fijar el sentido positivo <b>antes</b> de plantear el balance (de fuerzas o de momentos) evita la mayoría de los errores de signo — un resultado negativo no es un error, es información sobre el sentido real.</div>
+        <div class="term">¿Por qué P2 y P4 "calculan la presión distinto"?</div><div class="def">No es distinto en el fondo — es la misma hidrostática (P=P<sub>0</sub>+ρg·profundidad) aplicada a superficies de forma distinta. P2 es <b>plana</b>: la presión empuja siempre en la misma dirección, así que una sola fórmula (F=ρg·y<sub>G</sub>sinθ·S, con y<sub>R</sub>=y<sub>G</sub>+I<sub>xG</sub>/(Sy<sub>G</sub>) para el punto de aplicación) alcanza. P4 es <b>curva</b>: la dirección normal cambia punto a punto, así que hay que separar en F<sub>H</sub> (igual que una compuerta plana, pero sobre la proyección vertical) y F<sub>v</sub> (peso del volumen desplazado, sin equivalente en P2). Además, dentro de F<sub>H</sub>, P2 usa la fórmula general de y<sub>R</sub> porque el círculo tiene ancho variable con la profundidad (no se puede dibujar un prisma de presiones simple); P4 puede partir directo en rectángulo+triángulo porque su proyección es un rectángulo de ancho constante — mismo resultado, atajo distinto porque la forma lo permite.</div>
+      </div>
+    </section>
+
+    <p class="end-note">Guía preparada a partir de la pauta paso a paso verificada de la Clase Auxiliar C1 · CI3162 · Primavera 2026</p>
+
+  </main>
+</div>

@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+
+\pagestyle{plain}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+\newenvironment{supuestos}{%
+  \noindent\textbf{Supuestos:}
+  \begin{itemize}[leftmargin=1.4em, itemsep=1pt]
+}{%
+  \end{itemize}
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+% ---------- Encabezado ----------
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+\raggedright
+Mec\'anica de Fluidos CI3162\\
+Primavera 2026
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\raggedleft
+Prof.\ Alberto de la Fuente Stranger\\
+Auxs.\hspace{0.6cm}Josefina Moreno Faune\\
+Sebasti\'an Fredes Ojeda
+\end{minipage}
+
+\vspace{3pt}
+\hrule
+\vspace{-5pt}
+
+\begin{center}
+{\Huge\bfseries An\'alisis dimensional --- Preguntas 3 y 4}\\[6pt]
+{\large Freno de disco viscoso}
+\end{center}
+
+\vspace{10pt}
+\noindent\textit{Este documento complementa la pauta oficial explicada, verificando
+que \textbf{cada} ecuaci\'on usada en P3 y P4 es dimensionalmente consistente ---
+tanto los pasos intermedios de la integraci\'on como los resultados finales. La idea
+es que puedas usar esto como chequeo: si en un c\'alculo similar te dan unidades que
+no cuadran con esta tabla, hay un error antes de llegar al n\'umero.}
+\vspace{4pt}
+\hrule
+
+%======================================================================
+\section*{1. Unidades base de las variables involucradas}
+
+Todo el an\'alisis se hace en el sistema internacional (SI), reduciendo cada unidad
+derivada a sus unidades fundamentales (kg, m, s):
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Variable & Significado & Unidad usual & Unidad SI base \\
+\midrule
+$\mu$ & viscosidad din\'amica & Pa$\cdot$s & kg$\,$m$^{-1}$s$^{-1}$ \\
+$\omega,\ \omega_0$ & velocidad angular & rad/s & s$^{-1}$ (rad es adimensional) \\
+$r,\ R$ & radio & m & m \\
+$e,\ e_1,\ e_2$ & espesor de lubricante & m & m \\
+$\tau$ & esfuerzo de corte & Pa & kg$\,$m$^{-1}$s$^{-2}$ \\
+$A$ & \'area & m$^2$ & m$^2$ \\
+$F$ & fuerza & N & kg$\,$m$\,$s$^{-2}$ \\
+$T$ & torque & N$\cdot$m & kg$\,$m$^2$s$^{-2}$ \\
+$I$ & momento de inercia & kg$\cdot$m$^2$ & kg$\,$m$^2$ \\
+$\alpha$ & coef.\ de amortiguamiento rotacional & N$\cdot$m$\cdot$s & kg$\,$m$^2$s$^{-1}$ \\
+$t$ & tiempo & s & s \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Nota sobre $\alpha$:} no es una unidad ``est\'andar'' que uno se memorice; sale
+de exigir que $T=\alpha\omega$ tenga las unidades correctas de torque (ver \S3). Como
+$[\text{N}\!\cdot\!\text{m}\!\cdot\!\text{s}] = [\text{kg}\,\text{m}^2\text{s}^{-1}]$
+(se verifica abajo), ambas formas de escribirla son la misma unidad.
+
+%======================================================================
+\section*{2. Chequeo previo: $\text{N}\cdot\text{m}\cdot\text{s} \equiv \text{kg}\,\text{m}^2\text{s}^{-1}$}
+
+Antes de partir, conviene dejar establecida esta equivalencia porque aparece varias
+veces:
+\begin{equation}
+\text{N}\cdot\text{m}\cdot\text{s} = \left(\text{kg}\,\text{m}\,\text{s}^{-2}\right)\cdot
+\text{m}\cdot\text{s} = \text{kg}\,\text{m}^2\,\text{s}^{-1}
+\end{equation}
+(se us\'o $\text{N}=\text{kg}\,\text{m}\,\text{s}^{-2}$, la segunda ley de Newton).
+
+%======================================================================
+\section*{3. Pregunta 3 --- an\'alisis dimensional paso a paso}
+
+\subsection*{3.1 Esfuerzo de corte, $\tau(r)=\mu\,\dfrac{\omega r}{e}$}
+\begin{equation}
+[\tau] = [\mu]\cdot\frac{[\omega][r]}{[e]}
+= \left(\text{kg}\,\text{m}^{-1}\text{s}^{-1}\right)\cdot
+\frac{\left(\text{s}^{-1}\right)\left(\text{m}\right)}{\left(\text{m}\right)}
+= \text{kg}\,\text{m}^{-1}\text{s}^{-2} \equiv \text{Pa}\quad\checkmark
+\end{equation}
+El $r$ del numerador y el $m$ de $e$ se cancelan exactamente (ambos son ``metros de
+posici\'on radial''), dejando la unidad de presi\'on esperada para un esfuerzo.
+
+\subsection*{3.2 \'Area del anillo diferencial, $dA=2\pi r\,dr$}
+\begin{equation}
+[dA] = [r][dr] = \text{m}\cdot\text{m} = \text{m}^2\quad\checkmark
+\end{equation}
+
+\subsection*{3.3 Fuerza tangencial diferencial, $dF=\tau\,dA$}
+\begin{equation}
+[dF] = [\tau][dA] = \left(\text{kg}\,\text{m}^{-1}\text{s}^{-2}\right)\cdot\text{m}^2
+= \text{kg}\,\text{m}\,\text{s}^{-2} \equiv \text{N}\quad\checkmark
+\end{equation}
+
+\subsection*{3.4 Torque diferencial, $dT=r\,dF$}
+\begin{equation}
+[dT] = [r][dF] = \text{m}\cdot\text{N} = \text{N}\cdot\text{m}
+= \text{kg}\,\text{m}^2\,\text{s}^{-2}\quad\checkmark
+\end{equation}
+
+\subsection*{3.5 La forma integrable, $dT=\dfrac{2\pi\mu\omega}{e}\,r^3\,dr$}
+Aqu\'i conviene chequear el \textbf{coeficiente} y el \textbf{factor $r^3dr$} por
+separado, porque es el paso donde m\'as se presta a errores de \'algebra:
+\begin{equation}
+\left[\frac{2\pi\mu\omega}{e}\right]
+= \frac{\left(\text{kg}\,\text{m}^{-1}\text{s}^{-1}\right)\left(\text{s}^{-1}\right)}
+{\text{m}}
+= \text{kg}\,\text{m}^{-2}\text{s}^{-2}
+\end{equation}
+\begin{equation}
+[r^3\,dr] = \text{m}^3\cdot\text{m} = \text{m}^4
+\end{equation}
+Multiplicando:
+\begin{equation}
+[dT] = \left(\text{kg}\,\text{m}^{-2}\text{s}^{-2}\right)\cdot\text{m}^4
+= \text{kg}\,\text{m}^2\text{s}^{-2} \equiv \text{N}\cdot\text{m}\quad\checkmark
+\end{equation}
+Coincide exactamente con el paso 3.4 (como debe ser: es la misma cantidad $dT$,
+s\'olo reescrita). \textbf{Integrar en $r$ no cambia las unidades del coeficiente}
+que queda afuera de la integral --- s\'olo transforma $\int_0^R r^3\,dr$ en
+$R^4/4$, que sigue siendo m$^4$.
+
+\subsection*{3.6 Torque de un lado, $T_{\text{un lado}}=\dfrac{\pi\mu\omega R^4}{2e}$}
+\begin{equation}
+[T_{\text{un lado}}]
+= \left(\text{kg}\,\text{m}^{-1}\text{s}^{-1}\right)\cdot\left(\text{s}^{-1}\right)
+\cdot\frac{\text{m}^4}{\text{m}}
+= \text{kg}\,\text{m}^2\text{s}^{-2}\quad\checkmark
+\end{equation}
+(el $R^4$ contribuye m$^4$, el $e$ en el denominador resta un m, dejando m$^3$; junto
+con el m$^{-1}$ de $\mu$ da m$^2$ neto --- exactamente lo mismo que en 3.5, s\'olo que
+ahora ya integrado.)
+
+\subsection*{3.7 Resultado final, $T=\dfrac{\pi\mu\omega R^4}{2}\!\left(\dfrac1{e_1}+
+\dfrac1{e_2}\right)$}
+Como $\left(\dfrac1{e_1}+\dfrac1{e_2}\right)$ es una \textbf{suma de dos t\'erminos
+con la misma unidad} (m$^{-1}$ cada uno), el resultado de la suma tambi\'en tiene
+unidad m$^{-1}$ --- por eso se puede sumar directamente (nunca sumar\'ias, por
+ejemplo, m$^{-1}$ con m$^{-2}$). Entonces:
+\begin{equation}
+[T] = \text{kg}\,\text{m}^2\text{s}^{-2} \equiv \text{N}\cdot\text{m}\quad\checkmark
+\end{equation}
+igual que en 3.6, consistente con ser torque.
+
+%======================================================================
+\section*{4. Pregunta 4 --- an\'alisis dimensional paso a paso}
+
+\subsection*{4.1 El coeficiente $\alpha\equiv\dfrac{\pi\mu R^4}{2}\!\left(\dfrac1{e_1}+
+\dfrac1{e_2}\right)$}
+Es id\'entico al $T$ de la Parte 3.7 pero \textbf{sin el factor $\omega$} (porque se
+factoriz\'o $T=\alpha\omega$, ya que el torque viscoso es proporcional a $\omega$):
+\begin{equation}
+[\alpha] = \frac{[T]}{[\omega]}
+= \frac{\text{kg}\,\text{m}^2\text{s}^{-2}}{\text{s}^{-1}}
+= \text{kg}\,\text{m}^2\text{s}^{-1}
+\end{equation}
+Esta es la unidad de un \textbf{coeficiente de amortiguamiento rotacional} --- el
+an\'alogo, para rotaci\'on, del coeficiente $c$ en el roce viscoso lineal $F=-cv$
+(cuyas unidades son kg/s); ac\'a en vez de kg/s es kg$\cdot$m$^2$/s, porque estamos
+relacionando \emph{torque} con \emph{velocidad angular} en lugar de \emph{fuerza} con
+\emph{velocidad}.
+
+\subsection*{4.2 La ecuaci\'on de movimiento, $I\,\dfrac{d\omega}{dt}=-\alpha\omega$}
+Lado izquierdo:
+\begin{equation}
+\left[I\,\frac{d\omega}{dt}\right] = [I]\cdot\frac{[\omega]}{[t]}
+= \left(\text{kg}\,\text{m}^2\right)\cdot\frac{\text{s}^{-1}}{\text{s}}
+= \text{kg}\,\text{m}^2\text{s}^{-2} \equiv \text{N}\cdot\text{m}
+\end{equation}
+Lado derecho:
+\begin{equation}
+[\alpha\omega] = \left(\text{kg}\,\text{m}^2\text{s}^{-1}\right)\cdot\left(\text{s}^{-1}
+\right) = \text{kg}\,\text{m}^2\text{s}^{-2} \equiv \text{N}\cdot\text{m}\quad\checkmark
+\end{equation}
+Ambos lados dan torque, como debe ser en $I\,d\omega/dt=\sum M$.
+
+\subsection*{4.3 Separaci\'on de variables, $\dfrac{d\omega}{\omega}=-\dfrac{\alpha}{I}\,dt$}
+El lado izquierdo, $d\omega/\omega$, es \textbf{adimensional} (es el cambio relativo
+de $\omega$, una raz\'on entre dos cantidades de igual unidad). Por lo tanto el lado
+derecho tambi\'en debe serlo:
+\begin{equation}
+\left[\frac{\alpha}{I}\,dt\right] = \frac{\text{kg}\,\text{m}^2\text{s}^{-1}}
+{\text{kg}\,\text{m}^2}\cdot\text{s} = \text{s}^{-1}\cdot\text{s} = 1\quad\checkmark
+\end{equation}
+De paso, esto muestra que $\alpha/I$ \textbf{por s\'i solo} tiene unidades de
+s$^{-1}$ --- es decir, es una \textbf{tasa (constante de decaimiento)}, exactamente
+como la constante $\lambda$ en el decaimiento radiactivo $N=N_0e^{-\lambda t}$ o el
+$1/RC$ de un circuito RC. Tiene sentido: entre m\'as grande $\alpha$ (m\'as viscoso
+el freno) o m\'as chico $I$ (disco m\'as liviano), m\'as r\'apido decae $\omega$.
+
+\subsection*{4.4 La soluci\'on, $\omega(t)=\omega_0\exp\!\left(-\dfrac{\alpha}{I}\,t
+\right)$}
+El exponente de cualquier exponencial \textbf{debe} ser adimensional (no existe
+``$e$ elevado a segundos''); ya se verific\'o en 4.3 que $\alpha t/I$ lo es. Entonces:
+\begin{equation}
+[\omega(t)] = [\omega_0]\cdot\underbrace{[\exp(\cdot)]}_{1,\ \text{adimensional}}
+= \text{s}^{-1}\quad\checkmark
+\end{equation}
+consistente con que $\omega(t)$ es, como $\omega_0$, una velocidad angular.
+
+\subsection*{4.5 El tiempo de vida media, $t=\dfrac{I\ln 2}{\alpha}$}
+$\ln 2$ es un n\'umero puro (adimensional, sale de invertir la exponencial):
+\begin{equation}
+[t] = \frac{[I]}{[\alpha]} = \frac{\text{kg}\,\text{m}^2}{\text{kg}\,\text{m}^2
+\text{s}^{-1}} = \text{s}\quad\checkmark
+\end{equation}
+
+%======================================================================
+\section*{5. Verificaci\'on num\'erica cruzada}
+
+Con los datos del problema ($\mu=302$ mPa$\cdot$s, $e_1=0{,}25$ mm, $e_2=0{,}375$ mm,
+$R=0{,}08$ m, $\omega_0=14{,}87$ rad/s, $M=14$ g, $I=MR^2/2$), evaluando cada
+f\'ormula \textbf{num\'ericamente en unidades SI} (todo ya convertido a kg, m, s antes
+de calcular, para que las unidades se cancelen como se demostr\'o arriba):
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Cantidad & Valor & Unidad (verificada arriba) \\
+\midrule
+$T$ (P3) & $1{,}9262$ & N$\cdot$m $\ \equiv\ $kg$\,$m$^2$s$^{-2}$ \\
+$\alpha$ & $0{,}12954$ & N$\cdot$m$\cdot$s $\ \equiv\ $kg$\,$m$^2$s$^{-1}$ \\
+$I$ & $4{,}48\times10^{-5}$ & kg$\,$m$^2$ \\
+$\alpha/I$ & $2891{,}5$ & s$^{-1}$ \\
+$t$ (P4) & $2{,}3972\times10^{-4}$ & s $\ =\ 0{,}24$ ms \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Como chequeo final, se verific\'o num\'ericamente que $\dfrac{\alpha}{I}\,t=\ln 2$
+exactamente (a precisi\'on de m\'aquina) --- confirmando que tanto el \'algebra como
+las unidades cierran de forma consistente en toda la cadena P3$\to$P4.
+
+\vspace{4pt}
+\noindent{\small\textit{Nota:} todos los valores coinciden con los reportados en la
+\textit{Pauta oficial explicada}; este documento s\'olo agrega la verificaci\'on de
+unidades, ecuaci\'on por ecuaci\'on.}
+
+\end{document}

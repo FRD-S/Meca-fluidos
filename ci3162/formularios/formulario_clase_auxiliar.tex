@@ -1,0 +1,205 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[left=1.54cm,right=1.54cm,top=1.5cm,bottom=1.8cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tikz}
+
+\pagestyle{plain}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
+
+\begin{document}
+\shorthandoff{<>}
+\large
+
+% ---------- Encabezado ----------
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+\raggedright
+Mec\'anica de Fluidos CI3162\\
+Primavera 2026
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\raggedleft
+Prof.\ Alberto de la Fuente Stranger\\
+Auxs.\hspace{0.6cm}Josefina Moreno Faune\\
+Sebasti\'an Fredes Ojeda
+\end{minipage}
+
+\vspace{3pt}
+\hrule
+\vspace{-5pt}
+
+\begin{center}
+{\Huge\bfseries Formulario --- Clase Auxiliar C1}\\[6pt]
+Viernes 4 de Septiembre 2026
+\end{center}
+
+\vspace{14pt}
+
+\noindent\textit{Contiene \'unicamente las herramientas de c\'atedra necesarias para
+resolver los 4 problemas de la Clase Auxiliar C1. Donde una f\'ormula es producto de
+una demostraci\'on vista en clases, se incluye su deducci\'on.}
+
+\vspace{6pt}
+\hrule
+\vspace{10pt}
+
+%======================================================================
+\noindent{\LARGE\bfseries 1. Hidrost\'atica b\'asica}
+
+Para un fluido en reposo bajo gravedad, $\nabla P=\rho\vec g$ ($z$ hacia arriba) da
+\[
+\frac{dP}{dz}=-\rho g \quad\Longrightarrow\quad \boxed{P(z)=P_0+\rho g\,h}
+\]
+con $h$ la profundidad desde el punto de presi\'on $P_0$. Es la base de los Problemas
+2 y 3 (hidrost\'atica multicapa: la presi\'on se propaga sumando $\rho_i g\,\Delta h_i$
+capa a capa).
+
+%======================================================================
+\noindent{\LARGE\bfseries 2. Ley de viscosidad de Newton}
+
+Para un fluido newtoniano en corte simple, $\tau=\mu\dfrac{du}{dy}$, con $\tau$ el
+esfuerzo de corte, $\mu$ la viscosidad din\'amica y $du/dy$ el gradiente de velocidad.
+Es la ley constitutiva que se integra en la Herramienta 3.
+
+%======================================================================
+\noindent{\LARGE\bfseries 3. Viscos\'imetro de cilindros conc\'entricos (Couette anular)}
+
+Dos cilindros conc\'entricos de radios $R_i<R_e$ y altura $H$, con lubricante de
+viscosidad $\mu$ en el espacio anular. El exterior gira con velocidad angular $\omega$;
+el interior permanece fijo. Para flujo de Stokes, axisim\'etrico y estacionario, la
+velocidad tangencial satisface
+\[
+\frac{d}{dr}\left[\frac1r\frac{d(ru_\theta)}{dr}\right]=0
+\quad\Longrightarrow\quad
+u_\theta(r)=Ar+\frac{B}{r}
+\]
+Con las condiciones de borde $u_\theta(R_i)=0$ (cilindro interior fijo) y
+$u_\theta(R_e)=\omega R_e$ (cilindro exterior), se obtiene
+\[
+A=\frac{\omega R_e^2}{R_e^2-R_i^2}\ ,\qquad B=-\frac{\omega R_e^2R_i^2}{R_e^2-R_i^2}
+\]
+El esfuerzo de corte es $\tau_{r\theta}=\mu r\dfrac{d}{dr}\!\left(\dfrac{u_\theta}{r}\right)=-\dfrac{2\mu B}{r^2}$,
+y el torque por unidad de \'area en un cilindro de radio $r$ es
+$T=2\pi H r^2\tau_{r\theta}=-4\pi H\mu B$, es decir
+\[
+\boxed{T=4\pi\mu H\omega\,\frac{R_e^2R_i^2}{R_e^2-R_i^2}}
+\]
+Usada en el Problema 1 (con $\omega=U/R_e$, ya que la cuerda se enrolla en el cilindro
+exterior).
+
+%======================================================================
+\noindent{\LARGE\bfseries 4. Equilibrio de momentos de un cuerpo r\'igido}
+
+Segunda ley de Newton para rotaci\'on en equilibrio (o traslaci\'on a velocidad
+constante, sin aceleraci\'on), $\sum \vec\tau=0$ (o $\sum\vec F=0$). En el Problema 1,
+el torque viscoso de la Herramienta 3 equilibra el torque que ejerce el peso del carro
+a trav\'es de la cuerda (brazo $R_e$, componente del peso a lo largo del plano
+$Mg\sin\alpha$):
+\[
+\boxed{T_{visc}=Mg\sin\alpha\cdot R_e}
+\]
+
+%======================================================================
+\noindent{\LARGE\bfseries 5. Fuerza y torque de presi\'on sobre una superficie plana
+sumergida}
+
+Superficie plana de \'area $A$, con $y$ medida desde la superficie libre a lo largo del
+plano (profundidad real $y\sin\theta$) y presi\'on de referencia $P_0$ en $y=0$:
+$P(y)=P_0+\rho g\,y\sin\theta$.
+
+\textbf{Fuerza resultante} ($y_G=\frac1A\iint y\,dA$, centroide):
+\[
+F=\iint P\,dA=P_0A+\rho g\sin\theta\,y_G A
+\quad\Longrightarrow\quad
+\boxed{F=\left(P_0+\rho g\,y_G\sin\theta\right)A}
+\]
+
+\textbf{Centro de presi\'on} $y_R$ (momento respecto de $y=0$, teorema de ejes
+paralelos $\iint y^2dA=I_{xG}+Ay_G^2$; caso $P_0=0$):
+\[
+\boxed{y_R=y_G+\frac{I_{xG}}{y_G\,A}}
+\]
+Para un c\'irculo de di\'ametro $D$: $A=\pi D^2/4$, $I_{xG}=\pi D^4/64$. Usada en el
+Problema 2 (compuerta circular con dos lados) para obtener $F_a,F_b$ (fuerzas) y
+$b_a,b_b$ (brazos respecto de la r\'otula, $b=D/2+D^2/(16\,y_G)$), y el equilibrio de
+momentos que da $F_{max}$:
+\[
+\boxed{F_{max}=\frac{F_b\,b_b-F_a\,b_a}{D}}
+\]
+
+%======================================================================
+\noindent{\LARGE\bfseries 6. Fuerza vertical sobre una superficie curva (semiesfera)}
+
+La componente vertical de la fuerza de presi\'on sobre una superficie curva es
+$dF_z=P\,dA_h$ ($dA_h$ = proyecci\'on horizontal del elemento de \'area). Para una
+compuerta semiesf\'erica de radio $R$, con presi\'on $P_5$ en su punto m\'as alto
+(el borde, a profundidad cero) y l\'iquido de densidad $\rho_1$ llenando la calota,
+integrando en coordenadas esf\'ericas ($z$ = profundidad bajo el borde, $r$ = radio
+proyectado, $z=\sqrt{R^2-r^2}$):
+\[
+F_z=\int_0^R \left(P_5+\rho_1 g\sqrt{R^2-r^2}\right)2\pi r\,dr
+= P_5\,\pi R^2+\rho_1 g\,\frac{2}{3}\pi R^3
+\]
+que es, como es de esperar, el resultado general (Herramienta anterior de fuerza sobre
+superficie curva): presi\'on en el borde por el \'area proyectada, m\'as el peso del
+volumen de la calota (semiesfera, $V=\frac23\pi R^3$). Descontando la presi\'on
+atmosf\'erica que act\'ua por el lado exterior de la compuerta,
+\[
+\boxed{F=(P_5-P_{atm})\,\pi R^2-\rho_1 g\,\frac{2}{3}\pi R^3}
+\]
+es la fuerza neta que debe resistir la r\'otula (Problema 3).
+
+%======================================================================
+\noindent{\LARGE\bfseries 7. Ley de gases ideales}
+
+\[
+\boxed{PV=nRT}
+\qquad\text{o, por unidad de masa,}\qquad
+\boxed{P=\rho\frac{R}{m}T}
+\]
+con $R$ la constante universal de los gases ideales y $m$ la masa molar del gas.
+Relaciona presi\'on, densidad (o volumen) y temperatura de cada gas en el Problema 4.
+
+%======================================================================
+\noindent{\LARGE\bfseries 8. Procesos termodin\'amicos}
+
+Para una masa fija de gas ideal ($PV=nRT$ constante en $n$):
+\begin{itemize}
+\item \textbf{Isot\'ermico} ($T$ constante): $\boxed{P_iV_i=P_fV_f}$.
+\item \textbf{Isoc\'orico} ($V$ constante): $\boxed{\dfrac{P_i}{T_i}=\dfrac{P_f}{T_f}}$.
+\end{itemize}
+Usados en la parte 2 del Problema 4 para relacionar los estados inicial y final de
+cada gas.
+
+%======================================================================
+\noindent{\LARGE\bfseries 9. Presi\'on de Laplace (tensi\'on superficial) en una
+burbuja de jab\'on}
+
+Una interfaz curva esf\'erica de radio $r$ y tensi\'on superficial $\sigma$ sostiene
+una diferencia de presi\'on $\Delta P=2\sigma/r$ entre su interior y exterior. Esto se
+obtiene del equilibrio de fuerzas sobre un hemisferio de la interfaz: la fuerza neta de
+presi\'on, $\Delta P\cdot\pi r^2$, es resistida por la tensi\'on superficial actuando a
+lo largo del per\'imetro, $\sigma\cdot 2\pi r$:
+\[
+\Delta P\,\pi r^2=\sigma\, 2\pi r
+\quad\Longrightarrow\quad
+\Delta P=\frac{2\sigma}{r}
+\]
+Una \emph{burbuja de jab\'on} tiene dos interfaces (pel\'icula con dos superficies,
+interior y exterior, ambas de radio $\approx d/2$ si el espesor $\epsilon\ll d$), por lo
+que las dos ca\'idas de presi\'on se suman:
+\[
+\boxed{P_2-P_1=\frac{4\sigma}{d/2}=\frac{8\sigma}{d}}
+\]
+($P_2$ = presi\'on del gas interior a la burbuja, $P_1$ = presi\'on del gas exterior,
+$d$ = di\'ametro interior de la burbuja). Junto con la Herramienta 7 (gas ideal, para
+cada uno de los dos gases) permite despejar $d$ en el Problema 4.
+
+\end{document}

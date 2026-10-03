@@ -1,0 +1,444 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\pagestyle{plain}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+\newenvironment{supuestos}{%
+  \noindent\textbf{Supuestos:}
+  \begin{itemize}[leftmargin=1.4em, itemsep=1pt]
+}{%
+  \end{itemize}
+}
+
+\newenvironment{dcl}{%
+  \noindent\textbf{Diagrama de cuerpo libre --- fuerzas presentes:}
+  \begin{enumerate}[leftmargin=1.6em, itemsep=2pt, label=\arabic*.]
+}{%
+  \end{enumerate}
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+% ---------- Encabezado ----------
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+\raggedright
+Mec\'anica de Fluidos CI3162\\
+Primavera 2026
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\raggedleft
+Prof.\ Alberto de la Fuente Stranger\\
+Auxs.\hspace{0.6cm}Josefina Moreno Faune\\
+Sebasti\'an Fredes Ojeda
+\end{minipage}
+
+\vspace{3pt}
+\hrule
+\vspace{-5pt}
+
+\begin{center}
+{\Huge\bfseries Pauta oficial explicada --- Control 1}\\[6pt]
+10 y 11 de Septiembre 2026
+\end{center}
+
+\vspace{10pt}
+\noindent\textit{Este documento transcribe y explica paso a paso la pauta manuscrita del
+profesor, verificando cada resultado num\'ericamente. Se profundiza especialmente en la
+integraci\'on de las Preguntas 3--4 y en el an\'alisis de fuerzas de las Preguntas 7--8,
+que son las que generaron dudas. Se usa $g=9{,}81\ \text{m/s}^2$ y $1\ \text{atm}=101\,325$
+Pa en todos los c\'alculos.}
+\vspace{4pt}
+\hrule
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Pregunta 1 --- Viscosidad por regresi\'on lineal}
+
+\noindent Una placa de \'area $A$ se desliza a velocidad $U$ sobre una capa de lubricante
+de espesor $e$ y viscosidad $\mu$. La fuerza necesaria es, por la ley de Newton de la
+viscosidad (esfuerzo de corte uniforme en la capa, $\tau=\mu U/e$):
+\begin{equation}
+F=\mu\,\frac{U}{e}\,A=\underbrace{\left(\frac{\mu A}{e}\right)}_{m}\cdot U
+\end{equation}
+Es decir, $F$ es \textbf{lineal} en $U$, con pendiente $m=\mu A/e$: por eso los datos
+experimentales (pares $U_i,F_i$) se ajustan con la f\'ormula de regresi\'on lineal dada
+en el enunciado, tratando $x_i=U_i$, $y_i=F_i$.
+
+\begin{equation}
+m=\frac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}
+\end{equation}
+Con los 4 pares de datos de la Tabla 1 ($\bar x=1{,}1325$, $\bar y=1{,}29$):
+\begin{center}
+\fbox{$m=1{,}0482$}
+\end{center}
+Despejando $\mu$ de $m=\mu A/e$, con $A=131\ \text{cm}^2=0{,}0131\ \text{m}^2$ y
+$e=0{,}06\ \text{mm}=6\times10^{-5}$ m:
+\begin{equation}
+\boxed{\mu=\frac{m\,e}{A}=\frac{1{,}0482\times6\times10^{-5}}{0{,}0131}\approx0{,}0048\ \text{Pa\,s}}
+\end{equation}
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Pregunta 2 --- \textquestiondown Se rompe el tubo?}
+
+\noindent Un tubo cerrado en un extremo, lleno de agua hasta $h$, con un pist\'on de masa
+$M$ en el extremo abierto, se invierte (el extremo cerrado queda arriba).
+
+\begin{supuestos}
+\item El pist\'on est\'a en equilibrio est\'atico: la presi\'on atmosf\'erica desde abajo
+sostiene su peso m\'as la presi\'on del agua que empuja hacia abajo.
+\item Presi\'on hidrost\'atica est\'andar dentro del tubo (agua en reposo).
+\end{supuestos}
+
+\begin{dcl}
+\item \textbf{Peso propio $Mg$} --- hacia abajo, siempre presente.
+\item \textbf{Presi\'on atmosf\'erica $P_{atm}$ sobre la cara inferior del pist\'on}
+--- hacia \textbf{arriba} (empuja el pist\'on hacia adentro del tubo); el pist\'on est\'a
+en el extremo abierto, as\'i que esta cara mira directamente a la atm\'osfera.
+\item \textbf{Presi\'on del agua $P_b$ sobre la cara superior del pist\'on} --- hacia
+\textbf{abajo}; es la presi\'on justo en la base del tubo (el agua empuja el pist\'on
+hacia afuera).
+\end{dcl}
+Ninguna otra fuerza act\'ua: no hay roce (el pist\'on ``puede desplazarse libremente''),
+y como el pist\'on est\'a en reposo, estas tres fuerzas se equilibran exactamente.
+
+\textbf{Equilibrio del pist\'on} (\'area $A=\pi D^2/4$): la presi\'on atmosf\'erica
+$P_{atm}$ empuja el pist\'on hacia arriba (hacia el tubo); el peso $Mg$ y la presi\'on
+del agua $P_b$ (justo sobre el pist\'on, en la \textbf{base} del tubo) empujan hacia
+abajo:
+\begin{equation}
+Mg+P_b\,A=P_{atm}\,A
+\quad\Longrightarrow\quad
+P_b=P_{atm}-\frac{Mg}{A}
+\end{equation}
+\textbf{Presi\'on en el tope} (extremo cerrado, arriba): bajando hidrost\'aticamente
+$h$ desde la base hasta el tope, la presi\'on \textbf{disminuye} (el tope est\'a m\'as
+arriba):
+\begin{equation}
+P_t=P_b-\rho g h=P_{atm}-\frac{Mg}{A}-\rho g h
+\end{equation}
+La diferencia de presi\'on que debe resistir el tubo (entre el interior en el tope y el
+exterior atmosf\'erico) es
+\begin{equation}
+|\Delta P_{tubo}|=\frac{Mg}{A}+\rho g h
+\end{equation}
+Expresada en metros de columna de agua (mca), dividiendo por $\rho g$:
+\begin{equation}
+\frac{1}{\rho g}\left(\frac{Mg}{A}+\rho g h\right)
+\end{equation}
+Con $M=65{,}6$ g, $h=19{,}5$ cm, $D=2$ cm ($A=\pi(0{,}01)^2=3{,}1416\times10^{-4}$
+m$^2$):
+\begin{equation}
+\frac{Mg}{A}=2048{,}4\ \text{Pa}\ ,\qquad \rho g h=1912{,}95\ \text{Pa}
+\end{equation}
+\begin{center}
+\fbox{\parbox{0.85\linewidth}{\centering
+$\dfrac{1}{\rho g}\left(\dfrac{Mg}{A}+\rho gh\right)\approx0{,}404\ \text{mca}$\\[2pt]
+Como $0{,}404\ \text{mca}>\Delta P=0{,}31\ \text{mca}$ (el m\'aximo que resiste el
+tubo), \textbf{el tubo se rompe}.}}
+\end{center}
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Preguntas 3 y 4 --- Freno de disco viscoso}
+
+\noindent Un disco de di\'ametro $D$ gira entre dos paredes fijas, separado de cada una
+por un lubricante de viscosidad $\mu$ y espesores $e_1$, $e_2$.
+
+\begin{supuestos}
+\item Flujo de Couette en cada espacio: el perfil de velocidad es lineal a trav\'es del
+espesor (una pared fija a velocidad 0, el disco a velocidad $\omega r$).
+\item Los dos lados del disco son independientes: cada uno aporta su propio torque
+resistente, y se \textbf{suman}.
+\end{supuestos}
+
+\begin{dcl}
+\item \textbf{Torque externo aplicado $T$} --- el que hay que ejercer para mantener
+$\omega_0$ constante (s\'olo en P3; en P4 se deja de aplicar).
+\item \textbf{Torque viscoso resistente del lado 1} --- el lubricante de espesor $e_1$
+frena al disco, en sentido \textbf{opuesto} a la rotaci\'on.
+\item \textbf{Torque viscoso resistente del lado 2} --- an\'alogo, con espesor $e_2$.
+\end{dcl}
+No hay fuerzas ``lineales'' que listar aqu\'i (el disco no se traslada, s\'olo gira): el
+equilibrio es puramente rotacional, y son estos dos torques viscosos los que hacen todo
+el trabajo --- en P3 equilibran al torque aplicado; en P4, al no haber torque aplicado,
+son ellos solos los que desaceleran el disco.
+
+\textbf{Parte P3 --- Torque para girar a $\omega_0$ constante.}
+En un radio $r$, la velocidad del disco es $\omega r$; como el perfil es lineal a
+trav\'es del espesor $e$ (un lado fijo en $0$, el otro en $\omega r$), el esfuerzo de
+corte es
+\begin{equation}
+\tau(r)=\mu\,\frac{\omega r}{e}
+\end{equation}
+Este esfuerzo act\'ua sobre un anillo de \'area $dA=2\pi r\,dr$ a radio $r$, generando
+una fuerza tangencial $dF=\tau\,dA$ y, por lo tanto, un torque elemental (brazo de
+palanca $r$):
+\begin{equation}
+dT=r\,dF=r\cdot\mu\frac{\omega r}{e}\cdot2\pi r\,dr=\frac{2\pi\mu\omega}{e}\,r^3\,dr
+\end{equation}
+Integrando sobre todo el disco, de $r=0$ a $r=R$:
+\begin{equation}
+T_{\text{un lado}}=\frac{2\pi\mu\omega}{e}\int_0^R r^3\,dr
+=\frac{2\pi\mu\omega}{e}\cdot\frac{R^4}{4}=\frac{\pi\mu\omega R^4}{2e}
+\end{equation}
+Como el disco tiene \textbf{dos} caras, cada una con su propio espesor, los torques se
+suman:
+\begin{equation}
+\boxed{T=\frac{\pi\mu\omega R^4}{2}\left(\frac1{e_1}+\frac1{e_2}\right)}
+\end{equation}
+Con $e_1=0{,}25$ mm, $e_2=0{,}375$ mm, $\mu=302$ mPa\,s, $D=16$ cm ($R=0{,}08$ m),
+$\omega_0=142$ rpm $=142\cdot\frac{2\pi}{60}=14{,}87$ rad/s:
+\begin{center}
+\fbox{$T\approx1{,}93\ \text{N}\cdot\text{m}$}
+\end{center}
+
+\textbf{Parte P4 --- Tiempo para llegar a $\omega_0/2$ (aqu\'i est\'a la integraci\'on).}
+Al dejar de aplicar torque externo en $t=0$, el disco desacelera por el torque viscoso
+resistente. La segunda ley de Newton para rotaci\'on ($I\,d\omega/dt=$ torque neto) da:
+\begin{equation}
+I\,\frac{d\omega}{dt}=-T=-\alpha\,\omega
+\ ,\qquad
+\alpha\equiv\frac{\pi\mu R^4}{2}\left(\frac1{e_1}+\frac1{e_2}\right)
+\end{equation}
+(usamos $T=\alpha\omega$ porque el torque viscoso es \textbf{proporcional} a $\omega$,
+seg\'un la f\'ormula de P3 --- $\alpha$ es exactamente el mismo $T$ de P3 pero dividido
+por $\omega$). Esta es una ecuaci\'on diferencial de \textbf{variables separables}:
+\begin{equation}
+I\,\frac{d\omega}{dt}=-\alpha\omega
+\quad\Longrightarrow\quad
+\frac{d\omega}{\omega}=-\frac{\alpha}{I}\,dt
+\end{equation}
+Integrando ambos lados (izquierda en $\omega$, desde $\omega_0$ hasta $\omega$; derecha
+en $t$, desde $0$ hasta $t$):
+\begin{equation}
+\int_{\omega_0}^{\omega}\frac{d\omega'}{\omega'}=-\frac{\alpha}{I}\int_0^t dt'
+\quad\Longrightarrow\quad
+\ln\left(\frac{\omega}{\omega_0}\right)=-\frac{\alpha}{I}\,t
+\end{equation}
+\begin{equation}
+\boxed{\omega(t)=\omega_0\,\exp\!\left(-\frac{\alpha}{I}\,t\right)}
+\end{equation}
+Es un decaimiento exponencial cl\'asico (misma estructura matem\'atica que un circuito
+RC o un decaimiento radiactivo: la tasa de cambio es proporcional a la cantidad misma).
+Usando el momento de inercia dado, $I=MR^2/2$, y pidiendo $\omega=\omega_0/2$:
+\begin{equation}
+\frac{\omega_0}{2}=\omega_0\exp\!\left(-\frac{\alpha}{I}t\right)
+\quad\Longrightarrow\quad
+\ln\!\left(\frac12\right)=-\frac{\alpha}{I}t
+\quad\Longrightarrow\quad
+\boxed{t=\frac{I\ln2}{\alpha}}
+\end{equation}
+Con $M=14$ g, $R=0{,}08$ m ($I=4{,}48\times10^{-5}\ \text{kg}\cdot\text{m}^2$) y
+$\alpha=0{,}1295\ \text{N}\cdot\text{m}\cdot\text{s}$ (el mismo coeficiente de P3,
+evaluado num\'ericamente sin el factor $\omega$):
+\begin{center}
+\fbox{$t\approx0{,}00024\ \text{s}=0{,}24\ \text{ms}$}
+\end{center}
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Preguntas 5 y 6 --- Gas rotando a alta presi\'on}
+
+\noindent Un recipiente en forma de sector circular (\'angulo $\theta$, radio $R$, alto
+$e$) gira a velocidad angular $\omega$ constante, lleno de gas isot\'ermico (constante
+espec\'ifica $R_0$, temperatura $T$). Se desprecia $\vec g$.
+
+\begin{supuestos}
+\item Equilibrio en el sistema rotante: el gradiente de presi\'on radial equilibra
+exactamente la aceleraci\'on centr\'ipeta, $dP/dr=\rho\omega^2r$.
+\item Gas ideal, isot\'ermico: $P=\rho R_0T$ con $T$ constante en todo el proceso.
+\end{supuestos}
+
+\textbf{Parte P5 --- Radio m\'inimo.} Sustituyendo $\rho=P/(R_0T)$ en el equilibrio
+radial:
+\begin{equation}
+\frac{dP}{dr}=\frac{P}{R_0T}\,\omega^2r
+\quad\Longrightarrow\quad
+\frac{dP}{P}=\frac{\omega^2}{R_0T}\,r\,dr
+\end{equation}
+Integrando desde el centro ($r=0$, $P=P_m$, la presi\'on m\'inima que puede alcanzar el
+gas) hasta el borde ($r=R$, $P=P_d$, la presi\'on de dise\~no):
+\begin{equation}
+\ln\!\left(\frac{P_d}{P_m}\right)=\frac{\omega^2R^2}{2R_0T}
+\quad\Longrightarrow\quad
+\boxed{R=\sqrt{\frac{2R_0T}{\omega^2}\ln\!\left(\frac{P_d}{P_m}\right)}}
+\end{equation}
+Con $\theta=23^\circ$, $P_m=0{,}0045$ atm, $P_d=17{,}4$ atm, $R_0=213$ J/(kg\,K),
+$T=293$ K, $\omega=3248$ rpm $=340{,}13$ rad/s:
+\begin{center}
+\fbox{$R\approx2{,}99\ \text{m}\approx3\ \text{m}$}
+\end{center}
+
+\textbf{Parte P6 --- \textquestiondown Es viable el experimento?} La presi\'on en
+cualquier radio, integrando desde el centro, es $P(r)=P_m\exp\!\left(\frac{\omega^2
+r^2}{2R_0T}\right)$. La masa de gas atrapada en el sector, \textbf{despu\'es} de girar,
+es
+\begin{equation}
+M=\int_0^\theta\!\!\int_0^R \rho(r)\,e\,r\,dr\,d\varphi
+=\theta e\int_0^R\frac{P(r)}{R_0T}\,r\,dr
+=\frac{\theta e\,P_m}{R_0T}\int_0^R\exp\!\left(\frac{\omega^2}{2R_0T}r^2\right)r\,dr
+\end{equation}
+Usando la ayuda del enunciado ($\int_0^R\exp(Ar^2)r\,dr=\frac1{2A}[\exp(AR^2)-1]$, con
+$A=\omega^2/(2R_0T)$):
+\begin{equation}
+M=\frac{\theta e\,P_m}{R_0T}\cdot\frac{R_0T}{\omega^2}\left[\exp\!\left(\frac{\omega^2
+R^2}{2R_0T}\right)-1\right]=\frac{\theta e\,P_m}{\omega^2}\left(\frac{P_d}{P_m}-1\right)
+\end{equation}
+(se us\'o $\exp(\omega^2R^2/2R_0T)=P_d/P_m$, el resultado de P5). Esta masa es la
+\textbf{misma} que hab\'ia \textbf{antes} de girar, cuando el gas llenaba el mismo
+sector con densidad uniforme $\rho_0$ (y presi\'on $P_0=\rho_0R_0T$):
+\begin{equation}
+M_{\text{antes}}=\rho_0\cdot\underbrace{\frac{\theta R^2}{2}}_{\text{\'area sector}}\cdot e
+\end{equation}
+Igualando ambas masas y despejando $\rho_0$ (equivalentemente $P_0$):
+\begin{equation}
+\boxed{\rho_0=\frac{2P_m}{\omega^2R^2}\left(\exp\!\left(\frac{\omega^2R^2}{2R_0T}
+\right)-1\right)}
+\end{equation}
+Num\'ericamente: $\rho_m=P_m/(R_0T)=0{,}0073\ \text{kg/m}^3$, $\rho_0\approx3{,}42\
+\text{kg/m}^3$, y por gas ideal $P_0=\rho_0R_0T\approx213\,386$ Pa $\approx2{,}11$ atm.
+\begin{center}
+\fbox{\parbox{0.85\linewidth}{\centering
+$P_0\approx2{,}11\ \text{atm}>P_x=2\ \text{atm}$\\[2pt]
+Se necesita m\'as presi\'on inicial que la m\'axima disponible experimentalmente:
+\textbf{no es viable}.}}
+\end{center}
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Preguntas 7 y 8 --- Compuerta semicil\'indrica entre dos
+estanques}
+
+\noindent Dos estanques comparten una pared con una compuerta semicil\'indrica s\'olida
+(radio $R$, profundidad $L=1$ m, masa $M$), \textbf{articulada exactamente en su centro
+de curvatura}. El estanque 1 tiene gas a presi\'on absoluta $P_g$ y agua hasta $h_1$; el
+estanque 2 est\'a abierto a la atm\'osfera con agua hasta $h_2$.
+
+\begin{supuestos}
+\item La r\'otula est\'a en el centro de curvatura --- \'esta es la diferencia clave
+respecto de la compuerta semicil\'indrica de la Clase Auxiliar (ah\'i estaba en el
+extremo).
+\item El estanque 1 moja directamente s\'olo el cuarto inferior de la cara plana de la
+compuerta (altura $R$, desde el piso hasta la r\'otula).
+\item La superficie curva queda expuesta al estanque 2, que la moja completa (altura
+$2R$, con la r\'otula exactamente en su punto medio).
+\item Densidad del agua $\rho=1000$ kg/m$^3$ en ambos estanques.
+\end{supuestos}
+
+\begin{dcl}
+\item \textbf{Peso propio $Mg$} --- hacia abajo, aplicado en el centroide de la
+compuerta ($4R/3\pi$ de la r\'otula, f\'ormula dada en el enunciado).
+\item \textbf{Presi\'on del estanque 1} --- s\'olo sobre el cuarto inferior de la
+compuerta (la \'unica parte en contacto con esa agua); resultante horizontal $F_2$,
+aplicada bajo la r\'otula (a profundidad $y_R>x_G$, como en cualquier compuerta plana).
+\item \textbf{Presi\'on del estanque 2} --- sobre la superficie curva completa; tiene
+componente horizontal (fuerza sobre la proyecci\'on de altura $2R$) \textbf{y}
+componente vertical (empuje $E$, en el centroide del semic\'irculo) --- pero, como se
+muestra m\'as abajo, su torque \textbf{neto} respecto de la r\'otula es cero.
+\item \textbf{Reacci\'on de la r\'otula} --- las dos componentes de fuerza que el
+pasador ejerce sobre la compuerta; por ser una articulaci\'on, \textbf{no} aporta
+torque respecto de s\'i misma (por eso no aparece en el balance de momentos, aunque s\'i
+importar\'ia si pidieran esa reacci\'on).
+\end{dcl}
+Estas cuatro fuerzas son las que entran al balance de momentos. El enunciado menciona
+adem\'as una posible ``reacci\'on por estar apoyada a la pared'' --- en la pauta del
+profesor esto se resuelve sin necesitar una fuerza de apoyo aparte: la condici\'on
+``ni rota ni hay reacci\'on'' es exactamente la masa $M$ que deja el balance de
+momentos en cero usando s\'olo estas cuatro fuerzas (la r\'otula, al ser articulaci\'on,
+no aporta torque; si el balance no cerrara, ah\'i s\'i har\'ia falta una reacci\'on
+extra).
+
+\textbf{Dos herramientas que se usan repetidamente en este problema:}
+
+\textit{(1) Fuerza y torque horizontales sobre una superficie curva = los de su
+proyecci\'on plana vertical.} Para cualquier superficie (plana o curva), la componente
+\textbf{horizontal} de la fuerza de presi\'on, y su torque respecto de un eje
+horizontal, son \textbf{exactamente iguales} a los de una compuerta plana vertical del
+mismo alto y ancho --- porque $dF_x=P\,dA\cos\theta=P\,dA_{proy}$ es, punto a punto, la
+misma integral que para una placa plana. Por eso se puede usar directamente
+$y_R=y_G+I_{xG}/(Sy_G)$.
+
+\textit{(2) Torque nulo de una superficie que rodea completamente el eje de giro.} Si
+un fluido moja \textbf{toda} una superficie cil\'indrica centrada exactamente en la
+r\'otula, la presi\'on en cada punto apunta en direcci\'on radial (pasa por el centro),
+as\'i que su torque total (horizontal $+$ vertical) respecto de la r\'otula es
+\textbf{cero} --- la misma idea de la Clase Auxiliar, pero aqu\'i s\'i se cumple.
+
+\textbf{Fuerza y torque del estanque 1 (cuarto inferior, altura $R$).}
+Usando la herramienta (1), con $A=R\cdot L$ y $x_G=h_1-R/2$ (profundidad del centroide
+de esa franja bajo la superficie libre):
+\begin{equation}
+\boxed{F_2=P_g\,A+\rho g\left(h_1-\frac R2\right)A}
+\end{equation}
+Para el torque respecto de la r\'otula ($O=h_1-R$, su profundidad), se usa la
+descomposici\'on cl\'asica de $y_R$: el t\'ermino de la presi\'on manom\'etrica
+($\rho g$) aporta $I_{xG}+x_G(x_G-O)A$, y el t\'ermino de presi\'on uniforme del gas
+$P_g$ aporta su propio brazo, $R/2$ (el punto medio de esa franja de altura $R$):
+\begin{equation}
+\boxed{T_2=\rho g\Big[I_{xG}+x_G(x_G-O)A\Big]+P_g\cdot\frac R2\cdot R}
+\ ,\qquad I_{xG}=\frac{L R^3}{12}
+\end{equation}
+Con $h_1=1{,}26$ m, $R=0{,}56$ m, $P_g=1{,}5$ atm:
+\begin{center}
+\fbox{$F_2\approx94\,727\ \text{N}\ ,\qquad T_2\approx25\,357\ \text{N}\cdot\text{m}$}
+\end{center}
+Como el estanque 1 s\'olo moja un cuarto de la compuerta (\textbf{no} toda la
+superficie cil\'indrica alrededor de la r\'otula), \textbf{no} aplica la herramienta
+(2): este $T_2$ es un torque neto real, no nulo.
+
+\textbf{Verificaci\'on de la herramienta (2), usando el estanque 2 (altura completa
+$2R$).} El empuje (fuerza vertical) sobre un semicilindro completo, aplicado en el
+centroide del semic\'irculo ($4R/3\pi$ del centro, dato del enunciado):
+\begin{equation}
+E=\rho g\,\frac{\pi R^2}{2}\,L
+\ ,\qquad
+T_E=E\cdot\frac{4R}{3\pi}=\rho g L\,\frac{2R^3}{3}
+\end{equation}
+Para la fuerza horizontal, con altura completa $2R$ y la r\'otula exactamente en el
+centro de esa franja ($x_G=O=h_2-R$), el t\'ermino $x_G(x_G-O)$ se anula, dejando s\'olo
+el t\'ermino de forma:
+\begin{equation}
+T_2^{(2R)}=\rho g\,I_{xG}^{(2R)}=\rho g\,\frac{L(2R)^3}{12}=\rho g L\,\frac{2R^3}{3}
+\end{equation}
+\textbf{Son id\'enticos:} $T_E=T_2^{(2R)}$, para cualquier $R$, $\rho$, $L$ --- \'esta
+es exactamente la herramienta (2) confirmada algebraicamente: el torque vertical y el
+horizontal de una superficie que rodea completamente la r\'otula se cancelan
+exactamente, dando torque neto cero del estanque 2.
+
+\textbf{Parte P8 --- masa l\'imite.} Como el estanque 2 no aporta torque neto (recién
+verificado) y la superficie plana embebida (herramienta del peso) no aporta empuje
+(es plana), la \'unica forma de que la compuerta est\'e en equilibrio \textbf{sin}
+reacci\'on del apoyo es que el peso equilibre exactamente el \'unico torque neto que
+queda: el del estanque 1.
+\begin{equation}
+\sum M_{r\acute otula}=0:\qquad Mg\cdot\frac{4R}{3\pi}=T_2
+\end{equation}
+\begin{equation}
+\boxed{M=\frac{3\pi T_2}{4gR}}
+\end{equation}
+Con $T_2\approx25\,357$ N$\cdot$m, $R=0{,}56$ m:
+\begin{center}
+\fbox{$M\approx10\,875\ \text{kg}$}
+\end{center}
+
+\vspace{4pt}
+\noindent{\small\textit{Nota:} la parte m\'as sutil de este problema es notar que el
+"torque cero" (herramienta 2) s\'olo se aplica al estanque 2, porque \'este s\'i moja
+la compuerta por completo alrededor de la r\'otula. El estanque 1, al mojar s\'olo un
+cuarto, \textbf{s\'i} genera torque neto --- y es exactamente ese torque el que el peso
+debe equilibrar.}
+
+\end{document}

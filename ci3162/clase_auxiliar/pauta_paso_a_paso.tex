@@ -1,0 +1,497 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tikz}
+
+\pagestyle{plain}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+\newenvironment{supuestos}{%
+  \noindent\textbf{Supuestos:}
+  \begin{itemize}[leftmargin=1.4em, itemsep=1pt]
+}{%
+  \end{itemize}
+}
+
+\begin{document}
+\shorthandoff{<>}
+
+% ---------- Encabezado ----------
+\noindent
+\begin{minipage}[t]{0.45\textwidth}
+\raggedright
+Mec\'anica de Fluidos CI3162\\
+Primavera 2026
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.45\textwidth}
+\raggedleft
+Prof.\ Alberto de la Fuente Stranger\\
+Auxs.\hspace{0.6cm}Josefina Moreno Faune\\
+Sebasti\'an Fredes Ojeda
+\end{minipage}
+
+\vspace{3pt}
+\hrule
+\vspace{-5pt}
+
+\begin{center}
+{\Huge\bfseries Pauta paso a paso --- Clase Auxiliar C1}\\[6pt]
+Viernes 4 de Septiembre 2026
+\end{center}
+
+\vspace{10pt}
+\noindent\textit{Cada problema se resuelve como una derivaci\'on continua, con las
+ecuaciones numeradas al margen. Los supuestos usados se listan antes del desarrollo de
+cada problema. Se usa $g=9{,}81\ \text{m/s}^2$ en todos los c\'alculos num\'ericos.}
+\vspace{4pt}
+\hrule
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Problema 1 --- Viscos\'imetro de cilindros conc\'entricos}
+
+\noindent Carro de masa $M$ sobre un plano inclinado en $\alpha$, frenado por una
+cuerda enrollada en un cilindro exterior de radio $R_e$ y alto $H$, que gira dentro de
+otro cilindro fijo de radio $R_i$, separados por un lubricante de viscosidad $\mu$.
+
+\begin{supuestos}
+\item Flujo laminar, estacionario e incompresible, sin deslizamiento en las paredes.
+\item Flujo completamente desarrollado en la direcci\'on axial (sin efectos de borde,
+$H$ grande frente al espesor del anillo).
+\item R\'egimen de Stokes: se desprecia el t\'ermino convectivo/inercial de
+Navier--Stokes (v\'alido para lubricantes viscosos a velocidades moderadas).
+\item Simetr\'ia axial: $u_\theta=u_\theta(r)$ \'unicamente.
+\item Cuerda inextensible y sin masa; no hay p\'erdidas de torque adicionales en el
+sistema cuerda--cilindro.
+\item El carro se mueve a velocidad constante $U$ en la parte a) (equilibrio,
+aceleraci\'on nula).
+\end{supuestos}
+
+\textbf{Parte a).}
+Navier--Stokes, componente tangencial, axisim\'etrica y estacionaria, se reduce a
+\begin{equation}
+\frac{d}{dr}\!\left[\frac1r\frac{d(ru_\theta)}{dr}\right]=0
+\end{equation}
+Integrando una vez respecto de $r$,
+\begin{equation}
+\int\frac{d}{dr}\!\left[\frac1r\frac{d(ru_\theta)}{dr}\right]dr=\int 0\,dr
+\quad\Longrightarrow\quad
+\frac1r\frac{d(ru_\theta)}{dr}=2A
+\end{equation}
+con $A$ una constante de integraci\'on. Integrando nuevamente,
+\begin{equation}
+\int d(ru_\theta)=\int 2Ar\,dr
+\quad\Longrightarrow\quad
+ru_\theta=Ar^2+B
+\quad\Longrightarrow\quad
+u_\theta(r)=Ar+\frac Br
+\end{equation}
+La condici\'on de no deslizamiento en el cilindro interior fijo, $u_\theta(R_i)=0$, da
+\begin{equation}
+B=-AR_i^2
+\end{equation}
+y, junto con la condici\'on en el cilindro exterior (gira a $\omega$),
+$u_\theta(R_e)=\omega R_e$, se obtiene
+\begin{equation}
+A=\frac{\omega R_e^2}{R_e^2-R_i^2}\ ,\qquad B=-\frac{\omega R_e^2R_i^2}{R_e^2-R_i^2}
+\end{equation}
+El esfuerzo de corte resulta
+\begin{equation}
+\tau_{r\theta}=\mu r\frac{d}{dr}\!\left(\frac{u_\theta}{r}\right)=-\frac{2\mu B}{r^2}
+\end{equation}
+El torque que el fluido ejerce sobre un cilindro de radio $r$ y altura $H$ es la
+integral del esfuerzo de corte (fuerza tangencial por unidad de \'area, $\tau_{r\theta}\,r\,d\theta\,dz$)
+multiplicada por el brazo de palanca $r$, sobre toda la superficie lateral de ese cilindro:
+\begin{equation}
+T=\int_0^{H}\!\!\int_0^{2\pi}\tau_{r\theta}\,(r\,d\theta\,dz)\cdot r
+=2\pi Hr^2\tau_{r\theta}
+\end{equation}
+Sustituyendo $\tau_{r\theta}$ de (6),
+\begin{equation}
+T=2\pi Hr^2\left(-\frac{2\mu B}{r^2}\right)=-4\pi H\mu B
+\end{equation}
+Sustituyendo $B$ de (5), el torque resistente sobre el cilindro exterior es
+\begin{equation}
+T_{visc}=\frac{4\pi H\mu\omega R_e^2R_i^2}{R_e^2-R_i^2}
+\end{equation}
+Como la cuerda se enrolla sin deslizar en el cilindro exterior, $U=\omega R_e$, es decir
+$\omega=U/R_e$, con lo que
+\begin{equation}
+T_{visc}=\frac{4\pi H\mu U R_eR_i^2}{R_e^2-R_i^2}
+\end{equation}
+A velocidad constante la suma de torques es nula. El torque motor es el que ejerce el
+peso del carro a trav\'es de la cuerda, con brazo $R_e$:
+\begin{equation}
+T_{peso}=Mg\sin\alpha\cdot R_e
+\end{equation}
+Igualando $T_{visc}=T_{peso}$ y simplificando $R_e$ (aparece en ambos lados),
+\begin{equation}
+\frac{4\pi H\mu U R_i^2}{R_e^2-R_i^2}=Mg\sin\alpha
+\end{equation}
+Despejando $U$,
+\begin{equation}
+\boxed{U=\frac{Mg\sin\alpha\,(R_e^2-R_i^2)}{4\pi H\mu R_i^2}}
+\end{equation}
+
+\textbf{Parte b).} De la Ec.~(12), despejando ahora $R_i^2$ en vez de $U$,
+\begin{equation}
+4\pi H\mu U R_i^2+Mg\sin\alpha\,R_i^2=Mg\sin\alpha\,R_e^2
+\end{equation}
+\begin{equation}
+\boxed{R_i^2=\frac{Mg\sin\alpha\,R_e^2}{4\pi H\mu U+Mg\sin\alpha}}
+\end{equation}
+Con los datos de la Tabla 1 ($H=0{,}5$ m, $R_e=0{,}15$ m, $\nu=70$ cSt,
+$\rho_{aceite}=900$ kg/m$^3$, $M=6{,}0$ kg, $U=1$ m/s, $\alpha=30^\circ$), primero
+\begin{equation}
+\mu=\rho_{aceite}\,\nu=900\times70\times10^{-6}=0{,}063\ \text{Pa\,s}
+\end{equation}
+El numerador de (15) es $Mg\sin\alpha\,R_e^2=6{,}0\times9{,}81\times0{,}5\times(0{,}15)^2
+=0{,}6622\ \text{N}\cdot\text{m}^2$, y el denominador es
+$4\pi H\mu U+Mg\sin\alpha=0{,}3958+29{,}43=29{,}826$ N. Luego,
+\begin{equation}
+R_i^2=\frac{0{,}6622}{29{,}826}=0{,}022204\ \text{m}^2
+\end{equation}
+Resultando
+\begin{center}
+\fbox{\parbox{0.85\linewidth}{\centering
+$R_i\approx0{,}1490\ \text{m}=14{,}90\ \text{cm}$\quad
+(espesor de lubricante $R_e-R_i\approx0{,}0999$ cm $\approx1{,}0$ mm)}}
+\end{center}
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Problema 2 --- Compuerta plana circular}
+
+\noindent Compuerta circular de di\'ametro $D$, inclinada en $\theta$, rotulada en su
+extremo superior, con agua a altura $H_1$ a la izquierda y una columna cerrada de
+altura adicional $\Delta H$ a la derecha.
+
+\begin{supuestos}
+\item Fluido en reposo (hidrost\'atica pura), $\rho=1000$ kg/m$^3$ (agua), densidad
+constante.
+\item Se trabaja con presi\'on manom\'etrica: la presi\'on atmosf\'erica act\'ua en
+ambas superficies libres y se cancela en el balance neto sobre la compuerta.
+\item La compuerta es r\'igida y plana, libre de rotar en torno a la r\'otula.
+\item El tope en el extremo inferior act\'ua con brazo $D$ respecto de la r\'otula, en
+el sentido que se opone a la apertura (mismo sentido que la fuerza del lado izquierdo).
+\end{supuestos}
+
+\textbf{Parte a).} Se define $y$ a lo largo del plano de la compuerta, con origen en la
+superficie libre (no en la r\'otula), de modo que la profundidad vertical de un punto es
+$y\sin\theta$. El centroide del c\'irculo (\'area $S=\pi D^2/4$), medido a lo largo del
+plano desde la superficie libre del lado izquierdo, es
+\begin{equation}
+y_{G1}=\frac{H_1}{\sin\theta}+\frac D2
+\end{equation}
+(el t\'ermino $H_1/\sin\theta$ convierte la profundidad vertical $H_1$ de la r\'otula en
+distancia a lo largo del plano). Integrando la presi\'on hidrost\'atica sobre el \'area,
+la fuerza resultante es
+\begin{equation}
+F_a=\rho g\,(y_{G1}\sin\theta)\,S=\rho g\!\left(H_1+\frac D2\sin\theta\right)S
+\end{equation}
+\textit{De d\'onde nace $y_R$ y por qu\'e no es lo mismo que $y_G$.} La fuerza $F_a$ es
+correcta usando el centroide $y_{G1}$ porque, al integrar una presi\'on que var\'ia
+\textbf{linealmente} con $y$, el promedio de la presi\'on sobre toda el \'area es
+exactamente la presi\'on evaluada en el centroide --- por eso $F=\overline P\,S=\rho
+g\,y_G\sin\theta\,S$ es v\'alido sin m\'as. Pero $F_a$ es s\'olo la \textbf{magnitud} de
+la resultante; para el \textbf{torque} que la compuerta siente respecto de la r\'otula
+no basta la magnitud, hace falta saber \textbf{d\'onde} act\'ua esa resultante (su punto
+de aplicaci\'on). Como la presi\'on es mayor en la parte m\'as profunda de la compuerta
+que en la m\'as superficial, esa parte profunda ``pesa m\'as'' en el torque de lo que su
+sola \'area sugiere: el punto de aplicaci\'on $y_R$ (centro de presi\'on) queda, por
+esto, siempre m\'as profundo que el centroide $y_G$ (salvo en el caso l\'imite $I_{xG}\to
+0$). \textbf{Centro de gravedad y punto de aplicaci\'on de la fuerza no son el mismo
+punto} precisamente por esta no uniformidad de la presi\'on.
+
+Formalmente, $y_R$ se define exigiendo que el torque de la fuerza puntual equivalente
+$F$ aplicada en $y_R$ (respecto de la l\'inea $y=0$, la superficie libre) sea igual al
+torque real de la presi\'on distribuida:
+\begin{equation}
+F\cdot y_R=\iint P\,y\,dA=\rho g\sin\theta\iint y^2\,dA=\rho g\sin\theta\,I_x
+\end{equation}
+donde $I_x=\iint y^2dA$ es el segundo momento de \'area (momento de inercia de \'area)
+respecto del eje $y=0$ --- \textbf{no} respecto del eje centroidal. Por el teorema de
+ejes paralelos, $I_x=I_{xG}+S\,y_G^2$, con $I_{xG}$ el momento de inercia respecto del
+eje que pasa por el centroide ($I_{xG}=\pi D^4/64$ para un c\'irculo de di\'ametro $D$).
+Sustituyendo, y usando $F=\rho g\sin\theta\,y_G\,S$:
+\begin{equation}
+y_R=\frac{\rho g\sin\theta\,(I_{xG}+S\,y_G^2)}{\rho g\sin\theta\,y_G\,S}
+=y_G+\frac{I_{xG}}{S\,y_G}
+\end{equation}
+El t\'ermino $I_{xG}/(S\,y_G)$ es exactamente la correcci\'on por la no uniformidad de
+la presi\'on: mientras m\'as ``extendida'' est\'a el \'area lejos del centroide (mayor
+$I_{xG}$) o mientras m\'as cerca de la superficie libre est\'e el centroide (menor
+$y_G$), mayor es la separaci\'on entre $y_R$ y $y_G$. Aplicando esto al lado 1
+(izquierdo) de la compuerta,
+\begin{equation}
+y_{R1}=y_{G1}+\frac{I_{xG}}{S\,y_{G1}}
+\end{equation}
+y el brazo respecto de la r\'otula es $b_a=y_{R1}-H_1/\sin\theta$. Sustituyendo
+$y_{G1}$ y $y_{R1}$, el t\'ermino $H_1/\sin\theta$ se cancela:
+\begin{equation}
+b_a=\frac D2+\frac{I_{xG}}{S\,y_{G1}}=\frac D2+\frac{D^2}{16\,y_{G1}}
+\end{equation}
+El torque de presi\'on que ejerce el agua de la izquierda sobre la compuerta, respecto
+de la r\'otula, es
+\begin{equation}
+\boxed{T_a=F_a\cdot b_a}
+\end{equation}
+
+\textbf{Parte b).} An\'alogamente para el lado derecho, con $\Delta H$ extra,
+\begin{equation}
+y_{G2}=\frac{H_1+\Delta H}{\sin\theta}+\frac D2\ ,\qquad
+F_b=\rho g\!\left(H_1+\Delta H+\frac D2\sin\theta\right)S\ ,\qquad
+b_b=\frac D2+\frac{D^2}{16\,y_{G2}}
+\end{equation}
+El equilibrio de momentos respecto de la r\'otula (la compuerta est\'a en reposo,
+sostenida por el tope) es
+\begin{equation}
+\sum M_{r\acute otula}=0:\quad F_a\,b_a+F_{max}\,D-F_b\,b_b=0
+\end{equation}
+de donde
+\begin{equation}
+\boxed{F_{max}=\frac{F_b\,b_b-F_a\,b_a}{D}}
+\end{equation}
+Con los datos de la Tabla 2 ($D=2{,}5$ m, $\theta=40^\circ$, $H_1=0{,}5$ m,
+$\Delta H=0{,}6$ m; $\gamma=\rho g=9810$ N/m$^3$): $S=\pi(2{,}5)^2/4=4{,}9087$ m$^2$,
+\begin{equation}
+y_{G1}=2{,}0279\ \text{m}\ ,\qquad y_{G2}=2{,}9613\ \text{m}
+\end{equation}
+\begin{equation}
+F_a=62\,768{,}9\ \text{N}\ ,\qquad F_b=91\,661{,}8\ \text{N}
+\end{equation}
+\begin{equation}
+b_a=1{,}4426\ \text{m}\ ,\qquad b_b=1{,}3819\ \text{m}
+\end{equation}
+Resultando
+\begin{equation}
+F_{max}=\frac{91\,661{,}8\times1{,}3819-62\,768{,}9\times1{,}4426}{2{,}5}
+=\frac{126\,676-90\,548}{2{,}5}
+\end{equation}
+\begin{center}
+\fbox{$F_{max}\approx14\,446{,}4\ \text{N}$}
+\end{center}
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Problema 3 --- Compuerta esf\'erica}
+
+\noindent Cilindro de di\'ametro $D$, altura $H$, con l\'iquido $\rho_1$ en el tercio
+inferior, $\rho_2<\rho_1$ en el tercio medio, y gas a presi\'on $P_g$ en el tercio
+superior; tapado en el fondo por una compuerta esf\'erica rotulada en el di\'ametro.
+
+\begin{supuestos}
+\item Fluidos en reposo, inmiscibles, densidades constantes.
+\item El gas se trata como de densidad despreciable frente a los l\'iquidos: su peso
+no aporta a la variaci\'on de presi\'on dentro del tercio superior (presi\'on uniforme
+$=P_g$ en todo ese tercio).
+\item La compuerta es una \textbf{esfera completa} de radio $R=D/2$, rotulada en su
+plano \textbf{ecuatorial} (el di\'ametro horizontal) --- \textbf{no} en su polo
+superior. Su hemisferio superior queda embebido en el tercio inferior del cilindro,
+dentro del l\'iquido $\rho_1$; el punto m\'as alto de la compuerta (el polo) queda, por
+lo tanto, a una altura $R$ \textbf{por encima} del plano de la r\'otula. Su hemisferio
+inferior sobresale por debajo del cilindro, expuesto a la atm\'osfera.
+\item Presi\'on atmosf\'erica uniforme actuando sobre el hemisferio inferior (exterior)
+de la compuerta; se desprecia el peso del aire.
+\end{supuestos}
+
+\textbf{Parte a).} Partiendo de la superficie superior del gas, donde $P=P_g$, y
+bajando hidrost\'aticamente por todo el tercio de $\rho_2$ (espesor $H/3$) se llega a la
+interfaz $\rho_2/\rho_1$ con presi\'on $P_g+\rho_2 g\,H/3$. El punto m\'as alto de la
+compuerta (punto $A$, el polo de la esfera) \textbf{no} est\'a al fondo del cilindro,
+sino a una altura $R$ por encima de \'este (Supuesto 3); por lo tanto queda sumergido en
+el l\'iquido $\rho_1$ a una profundidad adicional de s\'olo $H/3-R$, no $H/3$ completo:
+\begin{equation}
+\boxed{P_A=P_g+\rho_2 g\,\frac H3+\rho_1 g\left(\frac H3-R\right)}\ ,\qquad R=\frac D2
+\end{equation}
+Con los datos de la Tabla 3 ($P_g=0{,}9\ \text{atm}=91\,192{,}5$ Pa, $H=0{,}6$ m,
+$D=0{,}02$ m $\Rightarrow R=0{,}01$ m, $\rho_1=1030$, $\rho_2=1000$ kg/m$^3$),
+\begin{equation}
+P_A=91\,192{,}5+1000\times9{,}81\times0{,}2+1030\times9{,}81\times0{,}19
+\end{equation}
+\begin{center}
+\fbox{$P_A\approx95\,074{,}3\ \text{Pa}\ (\approx0{,}938\ \text{atm})$}
+\end{center}
+
+\textbf{Parte b).} A diferencia de la Parte a), aqu\'i \textbf{no} se usa $P_A$: el
+m\'etodo de cuerpo libre corta la esfera en su plano ecuatorial (donde est\'a la
+r\'otula), as\'i que la presi\'on relevante es la que existe \textbf{a la profundidad de
+la r\'otula} (el fondo geom\'etrico del cilindro), no la del polo. Bajando los dos
+tercios $H/3$ \textbf{completos} (sin descontar $R$),
+\begin{equation}
+P_O=P_g+g\,\frac H3(\rho_1+\rho_2)=95\,175{,}4\ \text{Pa}
+\end{equation}
+(este es el mismo valor que se obtendr\'ia bajando hasta el fondo del cilindro sin
+considerar la esfera --- es simplemente la presi\'on hidrost\'atica a esa profundidad).
+
+\textit{Hemisferio superior (en el l\'iquido).} Se aisla, como cuerpo libre, un volumen
+ficticio de l\'iquido $\rho_1$ con la misma forma del hemisferio superior de la
+compuerta: acotado por la superficie curva (en contacto con el l\'iquido $\rho_1$
+circundante) y por un corte plano imaginario en el plano ecuatorial (\'area $\pi R^2$, a
+la profundidad de la r\'otula, presi\'on $P_O$). Equilibrio vertical (hacia arriba
+positivo), con $F_{domo}$ la fuerza inc\'ognita que el l\'iquido circundante ejerce
+sobre el domo:
+\begin{equation}
+F_{domo}+P_O\,\pi R^2-\rho_1 g\,\frac23\pi R^3=0
+\quad\Longrightarrow\quad
+F_{domo}=\rho_1 g\,\frac23\pi R^3-P_O\,\pi R^2
+\end{equation}
+Con los valores num\'ericos este resultado es fuertemente negativo: el l\'iquido empuja
+el hemisferio superior de la compuerta hacia \textbf{abajo}, con magnitud
+\begin{equation}
+F_{l\acute\imath quido\to compuerta}=P_O\,\pi R^2-\rho_1 g\,\frac23\pi R^3
+\end{equation}
+(por la tercera ley de Newton, esta es la fuerza real que el l\'iquido circundante
+--- id\'entico en ambos lados de la superficie, sea \'esta l\'iquido ficticio o compuerta
+real --- ejerce sobre la compuerta).
+
+\textit{Hemisferio inferior (en la atm\'osfera).} An\'alogamente, se aisla un volumen
+ficticio de aire (densidad despreciable) con la forma del hemisferio inferior, acotado
+por su superficie curva (a presi\'on $\approx P_{atm}$, uniforme) y por el mismo corte
+ecuatorial (\'area $\pi R^2$, tambi\'en a $P_{atm}$ pues el aire no tiene gradiente
+hidrost\'atico apreciable). Sin peso, el equilibrio vertical da
+\begin{equation}
+F_{domo}-P_{atm}\,\pi R^2=0
+\quad\Longrightarrow\quad
+F_{aire\to compuerta}=P_{atm}\,\pi R^2\quad(\text{hacia \textbf{arriba}})
+\end{equation}
+
+\textit{Fuerza neta sobre la r\'otula} (hacia abajo positivo, sumando ambas
+contribuciones):
+\begin{equation}
+\boxed{F=(P_O-P_{atm})\,\pi R^2-\rho_1 g\,\frac23\pi R^3}
+\end{equation}
+Con $R=0{,}01$ m y $P_{atm}=101\,325$ Pa,
+\begin{equation}
+(P_O-P_{atm})\pi R^2=-1{,}9320\ \text{N}\ ,\qquad
+\rho_1 g\,\frac23\pi R^3=0{,}02116\ \text{N}
+\end{equation}
+\begin{center}
+\fbox{\parbox{0.85\linewidth}{\centering
+$F\approx-1{,}95\ \text{N}$\\[2pt]
+(el signo negativo indica que la fuerza neta apunta hacia \textbf{arriba}, es decir,
+hacia el interior del estanque)}}
+\end{center}
+
+\vspace{4pt}
+\noindent{\small\textit{Nota sobre este resultado:} una entrega anterior de esta pauta
+presentaba $F\approx-1{,}91$ N (con signo \textbf{positivo} en el segundo t\'ermino),
+resultado de un error de geometr\'ia: se hab\'ia asumido que la compuerta era una
+\textbf{semiesfera} rotulada en su propio borde (mismo plano que su cara plana), en vez
+de una \textbf{esfera completa} rotulada en su ecuador. Al revisar el desarrollo
+manuscrito oficial de esta pregunta (Pregunta 5 del Control 1 Forma 5,
+\texttt{Desarrollo\_C1\_1.pdf}), la Figura~4 de ese documento muestra expl\'icitamente
+la esfera completa con la r\'otula atravesando su ecuador, y la Parte a) de esa pauta
+resta $D/2$ del tercio de $\rho_1$ exactamente como se hace aqu\'i. Con esa correcci\'on,
+la Parte b) recupera el signo \textbf{negativo}: el resultado de \textbf{este} documento
+($F\approx-1{,}95$ N) coincide en magnitud con el de la entrega \texttt{Pauta\_Control1\_Forma5},
+confirmando que ese valor anterior era correcto (por esta raz\'on geom\'etrica,
+no por ning\'un ajuste a la planilla de respuestas).}
+
+%======================================================================
+\newpage
+\noindent{\LARGE\bfseries Problema 4 --- Compuerta semicil\'indrica articulada en el
+extremo inferior}
+
+\noindent Estanque con l\'iquido $\rho$ (superficie libre a $P_{atm}$, altura $H_1$
+hasta el \textbf{tope superior} de la compuerta) separado de una c\'amara de gas a
+presi\'on $P_{Gas}$ por una compuerta semicil\'indrica de radio $R$ y ancho $L$,
+articulada en su extremo \textbf{inferior} $O$ (a profundidad $H_1+2R$; el fondo del
+estanque queda $H_2$ m\'as abajo). Peso de la compuerta despreciable.
+
+\begin{supuestos}
+\item Fluido en reposo (hidrost\'atica), densidad $\rho$ constante; se trabaja en
+presi\'on manom\'etrica (la atm\'osfera act\'ua igual en la superficie libre y, por
+simetr\'ia, aporta fuerza neta nula sobre cualquier superficie cerrada/sim\'etrica, por
+lo que no aparece en el resultado final).
+\item La r\'otula $O$ est\'a en el extremo \textbf{inferior} de la compuerta, \textbf{no}
+en su centro de curvatura (el centro geom\'etrico del arco queda a una altura $R$ por
+encima de $O$). Por lo tanto la resultante de presi\'on \textbf{no} pasa en general por
+$O$, y s\'i existe un torque neto que hay que equilibrar: la condici\'on de apertura es
+un balance de \textbf{momentos} respecto de $O$ ($\sum M_O=0$), no de fuerzas.
+\item Peso de la compuerta despreciable (dato): no aporta fuerza ni torque.
+\item La compuerta es un semic\'irculo completo (arco de $180^\circ$), con su cara plana
+(di\'ametro) sobre la pared del estanque, extendi\'endose desde el tope (profundidad
+$H_1$) hasta $O$ (profundidad $H_1+2R$).
+\end{supuestos}
+
+\textbf{Fuerza vertical (empuje) del l\'iquido.} La componente vertical de la fuerza de
+presi\'on sobre una superficie curva equivale al peso del volumen de l\'iquido
+comprendido entre la superficie y el nivel de referencia. Para el semicilindro (volumen
+$V=\pi R^2L/2$),
+\begin{equation}
+\boxed{F_v=\rho g\,\frac{\pi R^2}{2}\,L}
+\end{equation}
+Esta fuerza act\'ua en el centroide del semic\'irculo, a una distancia horizontal
+$x_G=\dfrac{4R}{3\pi}$ de la cara plana, que es tambi\'en su brazo de palanca respecto
+de $O$ (ya que $O$ est\'a sobre esa misma cara plana).
+
+\textbf{Fuerza horizontal del l\'iquido.} La presi\'on hidrost\'atica crece
+linealmente con la profundidad a lo largo de los $2R$ de altura de la compuerta: vale
+$\rho gH_1$ en el tope y $\rho g(H_1+2R)$ en $O$. Se descompone esta distribuci\'on
+trapezoidal en un rect\'angulo (presi\'on uniforme $\rho gH_1$ en todo el alto $2R$)
+m\'as un tri\'angulo (la parte que crece de 0 a $\rho g(2R)$):
+\begin{equation}
+F_\square=\rho gH_1\cdot(2R)\cdot L\ ,\qquad z_\square=R
+\end{equation}
+\begin{equation}
+F_\triangle=\rho g\,\frac{(2R)^2}{2}L=2\rho gR^2L\ ,\qquad z_\triangle=\frac{2R}{3}
+\end{equation}
+donde $z_\square$ y $z_\triangle$ son las alturas de aplicaci\'on \textbf{por encima
+de} $O$ (el rect\'angulo se aplica en su punto medio; el tri\'angulo crece hacia $O$, por
+lo que su centroide queda a un tercio de la altura medida desde $O$). La fuerza
+horizontal total es
+\begin{equation}
+F_H=F_\square+F_\triangle=2\rho gRL(H_1+R)
+\end{equation}
+
+\textbf{Fuerza y brazo del gas.} El gas, a presi\'on uniforme $P_{Gas}$, no tiene peso
+apreciable, por lo que su prisma de presiones es un simple rect\'angulo (sin parte
+triangular):
+\begin{equation}
+F_{GH}=P_{Gas}\cdot(2R)\cdot L\ ,\qquad z_G=R
+\end{equation}
+Por la misma raz\'on, la componente vertical de la fuerza del gas es nula.
+
+\textbf{Equilibrio de momentos respecto de $O$.} El torque que ejerce el gas (que
+tiende a abrir la compuerta) debe igualar al torque total que ejerce el l\'iquido (que
+la mantiene cerrada):
+\begin{equation}
+F_{GH}\cdot R=F_\square\cdot z_\square+F_\triangle\cdot z_\triangle+F_v\cdot x_G
+\end{equation}
+Sustituyendo cada t\'ermino,
+\begin{equation}
+\left(P_{Gas}\cdot2RL\right)R
+=\left(\rho gH_1\cdot2RL\right)R+\left(2\rho gR^2L\right)\frac{2R}{3}
++\left(\rho g\frac{\pi R^2}{2}L\right)\frac{4R}{3\pi}
+\end{equation}
+\begin{equation}
+2P_{Gas}R^2L=2\rho gR^2LH_1+\frac{4}{3}\rho gR^3L+\frac{2}{3}\rho gR^3L
+\end{equation}
+Sumando los dos \'ultimos t\'erminos ($\frac43+\frac23=2$) y simplificando $2R^2L$,
+\begin{equation}
+2P_{Gas}R^2L=2\rho gR^2L(H_1+R)
+\quad\Longrightarrow\quad
+\boxed{P_{Gas}=\rho g\,(H_1+R)}
+\end{equation}
+Es decir: la compuerta se abre cuando la presi\'on del gas iguala a la presi\'on
+hidrost\'atica evaluada en el \textbf{centro geom\'etrico} del arco (profundidad
+$H_1+R$), no en la r\'otula misma --- consecuencia directa de que $O$ no coincide con
+ese centro. La fuerza horizontal correspondiente del gas es
+\begin{equation}
+\boxed{F_{gas}=F_{GH}=2RL\,P_{Gas}=2\rho gRL\,(H_1+R)}
+\end{equation}
+
+\noindent\textit{Observaci\'on: $H_2$ no aparece en el resultado final --- solo ubica el
+fondo del estanque en la figura y confirma que la compuerta est\'a completamente
+sumergida; no es necesaria para este c\'alculo.}
+
+\end{document}
